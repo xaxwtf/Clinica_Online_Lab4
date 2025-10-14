@@ -1,0 +1,25 @@
+  <div class="wrapper fadeInDown">
+    <div id="formContent">
+      <!-- Tabs Titles -->
+      <h2 class="active"> Iniciar Sesion </h2>
+      <h2 (click)="redirectRegistro()" class="inactive underlineHover">Registrase </h2>
+  
+      <!-- Login Form -->
+      <form [formGroup]="login" (ngSubmit)="ValidarLogin()">
+        <input type="text" id="login" class="fadeIn second" name="login" placeholder="Correo Electronico" formControlName="correoElectronico">
+        
+        <input type="password" id="password" class="fadeIn third" name="login" placeholder="Contraseña" formControlName="contrasenia">
+        @if(errorLogin){
+          <p  style="color:red; font-size: xx-small;" > El Usuario o la Contraseña no es Correcta!</p>
+        }
+        
+        <input type="submit"   class="fadeIn fourth" value="Iniciar Sesion" >
+      </form>
+  
+      <!-- Remind Passowrd -->
+      <div id="formFooter">
+        <a class="underlineHover" href="#">Ha Perdido la Contraseña?</a>
+      </div>
+  
+    </div>
+  </div>
