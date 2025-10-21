@@ -15,6 +15,6 @@ export class SplashScreamComponent {
   ngOnInit() {
     setTimeout(() => {
       this.router.navigate(['/login']); // Redirige a "/home" después de 3 segundos
-    }, 50000);
+    }, 5000);
   }
 }

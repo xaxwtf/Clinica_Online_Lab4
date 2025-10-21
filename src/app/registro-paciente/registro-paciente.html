@@ -1,0 +1,48 @@
+      <!-- Login Form -->
+      
+      <form [formGroup]="registro"  >
+        <input type="text"  class="fadeIn second" name="login" placeholder="Nombre" formControlName="nombre"  >
+         @if(registro.controls["nombre"].errors && registro.controls["nombre"].touched){
+          <p  style="color:red; font-size: xx-small;" > El Nombre No es Válido</p>
+        }
+
+        <input type="text" class="fadeIn second" name="login" placeholder="Apellido"  formControlName="apellido">
+         @if(registro.controls["apellido"].errors && registro.controls["apellido"].touched){
+          <p  style="color:red; font-size: xx-small;" > El Apellido No es Válido</p>
+        }
+        <input type="text" class="fadeIn second" name="login" placeholder="Edad" formControlName="edad" >
+         @if(registro.controls["correoElectronico"].errors && registro.controls["correoElectronico"].touched){
+          <p  style="color:red; font-size: xx-small;" > edad</p>
+        }
+        <input type="text" class="fadeIn second" name="login" placeholder="Nro DNI" formControlName="dni" >
+         @if(registro.controls["correoElectronico"].errors && registro.controls["correoElectronico"].touched){
+          <p  style="color:red; font-size: xx-small;" > El Correo Electronico No es Valido</p>
+        }
+
+        <input type="text" class="fadeIn second" name="login" placeholder="OBRA SOCIAL" formControlName="especialidad" >
+         @if(registro.controls["correoElectronico"].errors && registro.controls["correoElectronico"].touched){
+          <p  style="color:red; font-size: xx-small;" > El Correo Electronico No es Valido</p>
+        }
+        <input type="text" class="fadeIn second" name="login" placeholder="Correo Electronico" formControlName="correoElectronico" >
+         @if(registro.controls["correoElectronico"].errors && registro.controls["correoElectronico"].touched){
+          <p  style="color:red; font-size: xx-small;" > El Correo Electronico No es Valido</p>
+        }
+
+        <input type="password" id="password" class="fadeIn third" name="login" placeholder="Contraseña" formControlName="contrasenia">
+        @if(registro.hasError('passwordsMismatch') && registro.get('contraseniaConf')?.touched){
+          <p  style="color:red; font-size: xx-small;" > Las Contraseñas no Coinciden</p>
+        }
+        <input type="password" id="password" class="fadeIn third" name="login" placeholder="Confirmar Contraseña" formControlName="contraseniaConf" >
+        
+        <h4>Imagen de Perfil I</h4>
+        <input type="file" class="fadeIn second" name="login" placeholder="Imagen de Perfil" formControlName="correoElectronico" >
+         @if(registro.controls["correoElectronico"].errors && registro.controls["correoElectronico"].touched){
+          <p  style="color:red; font-size: xx-small;" > El Correo Electronico No es Valido</p>
+        }
+        <h4> Imagen de Perfil II </h4>
+        <input type="file" class="fadeIn second" name="login" placeholder="Imagen de Perfil 2" formControlName="correoElectronico" >
+         @if(registro.controls["correoElectronico"].errors && registro.controls["correoElectronico"].touched){
+          <p  style="color:red; font-size: xx-small;" > El Correo Electronico No es Valido</p>
+        }
+        <input type="submit" class="fadeIn fourth" value="Registrase" >
+      </form>

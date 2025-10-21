@@ -3,26 +3,33 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Router } from '@angular/router';
 import { AuthService } from '../Servicios/auth.service';
 import { noNumbersValidator, passwordsMatchValidator } from '../Validators/Validators';
+import { RegistroEspecialista } from '../registro-especialista/registro-especialista';
+import { RegistroPaciente } from '../registro-paciente/registro-paciente';
 
 @Component({
   selector: 'app-registro',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RegistroEspecialista, RegistroPaciente],
   templateUrl: './registro.html',
   styleUrl: './registro.css'
 })
 export class Registro {
   registro:FormGroup;
+  test:boolean=true;
+  paciente:string="active";
+  especialista:string="inactive underlineHover";
+
+  
 
   constructor(private router:Router, private fb:FormBuilder, private authService:AuthService) { 
-    this.registro = this.fb.group({
-      nombre: ['', [Validators.required, noNumbersValidator, Validators.minLength(2) ]],
-      apellido: ['', [Validators.required, noNumbersValidator, Validators.minLength(2)]],
-      correoElectronico:['',[Validators.required, Validators.email]],
-      contrasenia: ['',Validators.required],
-      contraseniaConf:['',Validators.required]
-    },
-    { validators: passwordsMatchValidator('contrasenia', 'contraseniaConf') }
-  );
+      this.registro = this.fb.group({
+        nombre: ['', [Validators.required, noNumbersValidator, Validators.minLength(2) ]],
+        apellido: ['', [Validators.required, noNumbersValidator, Validators.minLength(2)]],
+        correoElectronico:['',[Validators.required, Validators.email]],
+        contrasenia: ['',Validators.required],
+        contraseniaConf:['',Validators.required]
+      },
+      { validators: passwordsMatchValidator('contrasenia', 'contraseniaConf') }
+    );
   }
   
   ngOnInit() {}
@@ -45,7 +52,23 @@ async registrarUsuario() {
 
   redirectLogin(){
     this.registro.reset();
-    this.router.navigate(['/home']);
+    this.router.navigate(['/login']);
   }
-
+  swapCategoria(){
+    this.test=!this.test; 
+    if(this.especialista=="active"){
+      this.especialista="inactive underlineHover";
+    }
+    else{
+      this.especialista="active";
+    }
+    if(this.paciente=="active"){
+      this.paciente="inactive underlineHover";
+    }
+    else{
+      this.paciente="active";
+    }
+    
+    return true;
+  }
 }

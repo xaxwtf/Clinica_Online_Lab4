@@ -297,3 +297,11 @@ input[type=text]:placeholder {
   padding: 1px;
   border-radius: 10%;
 }
+.Subtitulos h2{
+  font-size: small;
+  color: #39ace7;
+  border-color: #39ace7;
+}
+.Subtitulos h2.inactive {
+  color: #cccccc;
+}

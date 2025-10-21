@@ -3,33 +3,18 @@
       <!-- Tabs Titles -->
       <h2 (click)="redirectLogin()" class="inactive underlineHover"> Iniciar Session </h2>
       <h2  class="active">Registrase </h2>
-  
-      <!-- Login Form -->
-      <form [formGroup]="registro" (ngSubmit)="registrarUsuario()" >
-        <input type="text"  class="fadeIn second" name="login" placeholder="Nombre" formControlName="nombre"  >
-         @if(registro.controls["nombre"].errors && registro.controls["nombre"].touched){
-          <p  style="color:red; font-size: xx-small;" > El Nombre No es Válido</p>
-        }
+      <div class="Subtitulos">
+        <h2  class={{especialista}} (click)="test && swapCategoria()"> Especialista </h2>
+        <h2  class={{paciente}} (click)="!test && swapCategoria()"> Paciente  </h2>
+      </div>  
+      @if(test){
+        <app-registro-paciente></app-registro-paciente>
+      }
+      @else{
+        
+        <app-registro-especialista></app-registro-especialista>
+      }
 
-        <input type="text" class="fadeIn second" name="login" placeholder="Apellido"  formControlName="apellido">
-         @if(registro.controls["apellido"].errors && registro.controls["apellido"].touched){
-          <p  style="color:red; font-size: xx-small;" > El Apellido No es Válido</p>
-        }   
-
-        <input type="text" class="fadeIn second" name="login" placeholder="Correo Electronico" formControlName="correoElectronico" >
-         @if(registro.controls["correoElectronico"].errors && registro.controls["correoElectronico"].touched){
-          <p  style="color:red; font-size: xx-small;" > El Correo Electronico No es Valido</p>
-        }
-
-        <input type="password" id="password" class="fadeIn third" name="login" placeholder="Contraseña" formControlName="contrasenia">
-        @if(registro.hasError('passwordsMismatch') && registro.get('contraseniaConf')?.touched){
-          <p  style="color:red; font-size: xx-small;" > Las Contraseñas no Coinciden</p>
-        }
-        <input type="password" id="password" class="fadeIn third" name="login" placeholder="Confirmar Contraseña" formControlName="contraseniaConf" >
-
-        <input type="submit" class="fadeIn fourth" value="Registrase" >
-      </form>
-  
       <!-- Remind Passowrd -->
       <div id="formFooter">
         

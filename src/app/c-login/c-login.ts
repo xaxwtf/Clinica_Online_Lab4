@@ -46,4 +46,10 @@ async ValidarLogin(){
     async hideStatusBar() {
     
   }
+  cargarTest(){
+      this.login.setValue({
+      correoElectronico: 'test@test.com',
+      contrasenia: 'test123'
+    });
+  }
 }
