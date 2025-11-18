@@ -1,0 +1,9 @@
+<div> 
+<h2> Especialistas </h2>
+@for (item of especialistas; track $index) {
+<app-un-especialista [Usuario]="item"  (cambiarEstado)="onCambiarEstado(item,$event)" > </app-un-especialista>
+}
+</div>
+<div>
+    <button> Nuevo Administrador</button>
+</div>

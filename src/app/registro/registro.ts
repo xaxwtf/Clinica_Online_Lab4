@@ -33,7 +33,7 @@ export class Registro {
   }
   
   ngOnInit() {}
-async registrarUsuario() {
+/*async registrarUsuario() {
   const { correoElectronico, contrasenia, nombre, apellido } = this.registro.value;
 
   try {
@@ -47,7 +47,7 @@ async registrarUsuario() {
   } catch (error) {
     console.error("Error al registrar usuario:", error);
   }
-}
+}*/
  
 
   redirectLogin(){

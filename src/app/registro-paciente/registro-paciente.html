@@ -1,6 +1,6 @@
       <!-- Login Form -->
       
-      <form [formGroup]="registro"  >
+      <form [formGroup]="registro" (ngSubmit)="registrarUsuario()" >
         <input type="text"  class="fadeIn second" name="login" placeholder="Nombre" formControlName="nombre"  >
          @if(registro.controls["nombre"].errors && registro.controls["nombre"].touched){
           <p  style="color:red; font-size: xx-small;" > El Nombre No es Válido</p>
@@ -19,7 +19,7 @@
           <p  style="color:red; font-size: xx-small;" > El Correo Electronico No es Valido</p>
         }
 
-        <input type="text" class="fadeIn second" name="login" placeholder="OBRA SOCIAL" formControlName="especialidad" >
+        <input type="text" class="fadeIn second" name="login" placeholder="OBRA SOCIAL" formControlName="obraSocial" >
          @if(registro.controls["correoElectronico"].errors && registro.controls["correoElectronico"].touched){
           <p  style="color:red; font-size: xx-small;" > El Correo Electronico No es Valido</p>
         }
@@ -32,17 +32,13 @@
         @if(registro.hasError('passwordsMismatch') && registro.get('contraseniaConf')?.touched){
           <p  style="color:red; font-size: xx-small;" > Las Contraseñas no Coinciden</p>
         }
-        <input type="password" id="password" class="fadeIn third" name="login" placeholder="Confirmar Contraseña" formControlName="contraseniaConf" >
+        <input type="password" id="passwordotra" class="fadeIn third" name="login" placeholder="Confirmar Contraseña" formControlName="contraseniaConf" >
         
-        <h4>Imagen de Perfil I</h4>
-        <input type="file" class="fadeIn second" name="login" placeholder="Imagen de Perfil" formControlName="correoElectronico" >
+        <h4>Imagenes De Perfil</h4>
+        <input type="file" class="fadeIn second" name="login" placeholder="Imagen de Perfil" formControlName="imgPerfil" (change)="onFilesSelected($event)" multiple accept="image/*" >
          @if(registro.controls["correoElectronico"].errors && registro.controls["correoElectronico"].touched){
-          <p  style="color:red; font-size: xx-small;" > El Correo Electronico No es Valido</p>
+          <p  style="color:red; font-size: xx-small;" > Debe Seleccionar al Menos una Imagen</p>
         }
-        <h4> Imagen de Perfil II </h4>
-        <input type="file" class="fadeIn second" name="login" placeholder="Imagen de Perfil 2" formControlName="correoElectronico" >
-         @if(registro.controls["correoElectronico"].errors && registro.controls["correoElectronico"].touched){
-          <p  style="color:red; font-size: xx-small;" > El Correo Electronico No es Valido</p>
-        }
+
         <input type="submit" class="fadeIn fourth" value="Registrase" >
       </form>

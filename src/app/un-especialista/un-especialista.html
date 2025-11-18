@@ -1,0 +1,15 @@
+<div class="Informacion">
+    <h4> Nombre: {{Usuario.Nombre}} </h4>
+    <h4> Apellido: {{Usuario.Apellido}} </h4>
+    <h4> Edad: {{Usuario.Edad}} </h4>
+    <h4> DNI: {{Usuario.DNI }} </h4>
+    <h4> Especialidad: {{Usuario.especialidad}} </h4>
+    <h4> Mail: {{Usuario.uid}} </h4>
+    <h4> <img src="/public/icon/favicon-96x96.png" alt="test"> </h4>
+</div>
+<div class="ActualizarEstados">
+  <button (click)="habilitar()" [disabled]="Usuario.activo">Habilitar</button>
+  <button (click)="inhabilitar()" [disabled]="!Usuario.activo">Inhabilitar</button>
+</div>
+
+

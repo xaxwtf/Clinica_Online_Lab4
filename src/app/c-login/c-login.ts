@@ -29,7 +29,7 @@ async ValidarLogin(){
     try{
       const {correoElectronico, contrasenia} = this.login.value;
       await this.authService.login(correoElectronico, contrasenia).then((r)=>{
-        this.route.navigate(['/usuario']);
+        this.route.navigate(['/test']);
       }).catch((error) => {
         this.errorLogin=true;
       });
@@ -50,6 +50,12 @@ async ValidarLogin(){
       this.login.setValue({
       correoElectronico: 'test@test.com',
       contrasenia: 'test123'
+    });
+  }
+    cargarTest2(){
+      this.login.setValue({
+      correoElectronico: 'admin@test.com',
+      contrasenia: 'admin123456789'
     });
   }
 }

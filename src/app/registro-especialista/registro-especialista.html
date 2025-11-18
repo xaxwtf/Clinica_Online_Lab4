@@ -1,7 +1,7 @@
 
       <!-- Login Form -->
       
-      <form [formGroup]="registro"  >
+      <form [formGroup]="registro" (ngSubmit)="registrarUsuario()" >
         <input type="text"  class="fadeIn second" name="login" placeholder="Nombre" formControlName="nombre"  >
          @if(registro.controls["nombre"].errors && registro.controls["nombre"].touched){
           <p  style="color:red; font-size: xx-small;" > El Nombre No es Válido</p>
@@ -17,28 +17,34 @@
         }
         <input type="text" class="fadeIn second" name="login" placeholder="Nro DNI" formControlName="dni" >
          @if(registro.controls["correoElectronico"].errors && registro.controls["correoElectronico"].touched){
-          <p  style="color:red; font-size: xx-small;" > El Correo Electronico No es Valido</p>
+          <p  style="color:red; font-size: xx-small;" > El DNI ingresado no es Valido</p>
         }
+        <select  id="especialidad" formControlName="especialidad" (change)="seleccionarUnaEspecialidadExistente($event)">
+          @for (item of this.especialidadesExistentes ; track $index) {
+              <option [value]="item.nombre">{{item.nombre}}</option>
+          }
+          
+        </select>
 
         <input type="text" class="fadeIn second" name="login" placeholder="Especialidad" formControlName="especialidad" >
          @if(registro.controls["correoElectronico"].errors && registro.controls["correoElectronico"].touched){
-          <p  style="color:red; font-size: xx-small;" > El Correo Electronico No es Valido</p>
+          <p  style="color:red; font-size: xx-small;" > La Especialidad Indicada no es Valida</p>
         }
         <input type="text" class="fadeIn second" name="login" placeholder="Correo Electronico" formControlName="correoElectronico" >
          @if(registro.controls["correoElectronico"].errors && registro.controls["correoElectronico"].touched){
           <p  style="color:red; font-size: xx-small;" > El Correo Electronico No es Valido</p>
         }
 
-        <input type="password" id="password" class="fadeIn third" name="login" placeholder="Contraseña" formControlName="contrasenia">
+        <input type="password"  class="fadeIn third" name="login" placeholder="Contraseña" formControlName="contrasenia">
         @if(registro.hasError('passwordsMismatch') && registro.get('contraseniaConf')?.touched){
           <p  style="color:red; font-size: xx-small;" > Las Contraseñas no Coinciden</p>
         }
-        <input type="password" id="password" class="fadeIn third" name="login" placeholder="Confirmar Contraseña" formControlName="contraseniaConf" >
+        <input type="password"  class="fadeIn third" name="login" placeholder="Confirmar Contraseña" formControlName="contraseniaConf" >
         
         <h4>Imagen de Perfil</h4>
-        <input type="file" class="fadeIn second" name="login"  formControlName="correoElectronico" >
+        <input type="file" class="fadeIn second" name="login"  formControlName="imgPerfil"  (change)="onFilesSelected($event)" accept="image/*">
          @if(registro.controls["correoElectronico"].errors && registro.controls["correoElectronico"].touched){
-          <p  style="color:red; font-size: xx-small;" > El Correo Electronico No es Valido</p>
+          <p  style="color:red; font-size: xx-small;" > Debe Seleccionar Una Imagen</p>
         }
         <input type="submit" class="fadeIn fourth" value="Registrase" >
       </form>

@@ -10,9 +10,9 @@ export class Especialista extends Persona{
         dni:string, 
         mail:string, 
         contrasenia:string,
-
         especialidad:string,
-        imagenPerfil:string
+        imagenPerfil:string,
+        activo:boolean
     ){
         super(nombre,apellido,edad,dni,mail,contrasenia);
         this._especialidad=especialidad;
