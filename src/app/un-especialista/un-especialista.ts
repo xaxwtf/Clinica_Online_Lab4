@@ -13,7 +13,7 @@ export class UnEspecialista {
   @Output() cambiarEstado = new EventEmitter<boolean>();
   
   ngOnInit(){
-    console.log(this.Usuario);
+    
   }
 
   habilitar() {

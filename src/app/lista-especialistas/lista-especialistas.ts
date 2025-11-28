@@ -5,6 +5,7 @@ import { SUsuarios } from '../Servicios/s-usuarios';
 import { Rol } from '../Models/Rol';
 import { IEspecialistaDB } from '../Models/I_EspecialistaDB';
 import { IUsuarioDB } from '../Models/I_UsuarioDB';
+import { BarraDeUsuario } from '../barra-de-usuario/barra-de-usuario';
 
 @Component({
   selector: 'app-lista-especialistas',
@@ -20,7 +21,7 @@ export class ListaEspecialistas implements OnInit {
   }
   async ngOnInit() {
    this.especialistas= await this.serv_Usuarios.getUsuariosByCampo<IEspecialistaDB>("rol", Rol.Especialista);
-   console.log(this.especialistas);
+
   }
 
 onCambiarEstado(usuario: IEspecialistaDB, nuevoEstado: boolean) {

@@ -19,14 +19,23 @@
          @if(registro.controls["correoElectronico"].errors && registro.controls["correoElectronico"].touched){
           <p  style="color:red; font-size: xx-small;" > El DNI ingresado no es Valido</p>
         }
-        <select  id="especialidad" formControlName="especialidad" (change)="seleccionarUnaEspecialidadExistente($event)">
-          @for (item of this.especialidadesExistentes ; track $index) {
-              <option [value]="item.nombre">{{item.nombre}}</option>
-          }
-          
-        </select>
+        <div class="especialidad">
+          <h4>Seleccionar Especialidades</h4>
+          <div class="opciones"> 
+            @for (item of especialidadesExistentes; track $index) {
+            
+              <label class="opcion">              
+                <input  type="checkbox"  [value]="item.nombre" (change)="onToggleEspecialidad(item.nombre, $event.target.checked)">
+                {{ item.nombre }} 
+              </label>
 
-        <input type="text" class="fadeIn second" name="login" placeholder="Especialidad" formControlName="especialidad" >
+            }
+
+          </div>
+
+          <input id="nuevaEspecialidad" #inputEspecialidad type="text" placeholder="Agregar Nueva" (keyup.enter)="agregarEspecialidadNueva(inputEspecialidad) ">
+        </div>
+
          @if(registro.controls["correoElectronico"].errors && registro.controls["correoElectronico"].touched){
           <p  style="color:red; font-size: xx-small;" > La Especialidad Indicada no es Valida</p>
         }
@@ -46,5 +55,17 @@
          @if(registro.controls["correoElectronico"].errors && registro.controls["correoElectronico"].touched){
           <p  style="color:red; font-size: xx-small;" > Debe Seleccionar Una Imagen</p>
         }
+        <div class="chapta">
+          <input type="text" class="ch" value="5"  formControlName="operandoA" > <input type="text" class="ch"   formControlName="operador" readonly> <input type="text" class="ch"  formControlName="operandoB"> =  <input type="text" class="ch"  formControlName="resultadoChapta">
+          <button type="button" (click)="onClickRegenerarCatpcha()" class="icon-btn">
+              <fa-icon [icon]="faCoffee"></fa-icon>
+          </button>
+        </div>
+           @if(registro.hasError('captchaIncorrecto') && 
+          (registro.get('operandoA')?.touched || registro.get('operandoB')?.touched)){
+  
+          <p  style="color:red; font-size: xx-small;" > El Chapta Es incorrecto!</p>
+          }
+       
         <input type="submit" class="fadeIn fourth" value="Registrase" >
       </form>

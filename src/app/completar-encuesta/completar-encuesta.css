@@ -1,0 +1,57 @@
+:host{
+    text-align: center;
+}
+.modal-container {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.pregunta {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.estrella {
+  font-size: 28px;
+  cursor: pointer;
+  color: #ccc;
+  transition: 0.2s;
+  margin-right: 6px;
+}
+
+.estrella.filled {
+  color: gold;
+}
+
+.botones {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 10px;
+}
+
+.btn {
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.confirmar {
+  background: #4caf50;
+  color: white;
+}
+
+.cancelar {
+  background: #d9534f;
+  color: white;
+}
+.test{
+    flex-direction: row;
+}

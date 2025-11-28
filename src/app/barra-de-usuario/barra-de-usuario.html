@@ -1,0 +1,33 @@
+<mat-toolbar color="primary">
+
+  <!-- Logo -->
+  <span class="logo"> </span>
+
+  <!-- Espaciador -->
+  <span class="spacer"></span>
+
+  <!-- Datos del usuario -->
+  <div class="usuario" >
+
+    <img [src]="usuario?.ImagenesDePerfil" class="avatar" alt="imagen">
+
+    <span>{{usuario?.Nombre}} </span>
+    <span> {{usuario?.Apellido}} </span>
+
+    <!-- Menú de opciones -->
+    <button mat-icon-button [matMenuTriggerFor]="menu">
+      <mat-icon>expand_more</mat-icon>
+    </button>
+
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="irPerfil()">
+        <mat-icon>person</mat-icon> Perfil
+      </button>
+
+      <button mat-menu-item (click)="logout()">
+        <mat-icon> logout </mat-icon> Cerrar sesión
+      </button>
+    </mat-menu>
+  </div>
+
+</mat-toolbar>

@@ -1,0 +1,35 @@
+:host{
+    text-align: center;
+}
+.contenedor {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.estrellas {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.estrella {
+  font-size: 40px;
+  color: #bdbdbd;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.estrella.filled {
+  color: #ffca28;
+}
+
+.full {
+  width: 90%;
+}
+
+.botones {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}

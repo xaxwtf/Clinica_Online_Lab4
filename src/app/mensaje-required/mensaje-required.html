@@ -1,0 +1,14 @@
+<div class="contenedor">
+<mat-form-field appearance="outline" class="full-width"  >
+  <textarea matInput [placeholder]="mensaje" [(ngModel)]="textoIngresado" rows="12" cdkAutosize cdkAutosizeMinRows="5" cdkAutosizeMaxRows="20" [readonly]="!escritura" > </textarea>
+</mat-form-field>
+@if(errorText){
+    <p> El Texto es Demaciado Corto </p>
+}
+@if(escritura){
+  <button type="button" (click)="confirmar()"> Confirmar</button>
+}
+<button type="button" (click)="cancelar()"> Cancelar </button>
+</div>
+
+

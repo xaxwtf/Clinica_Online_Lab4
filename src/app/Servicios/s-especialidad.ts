@@ -1,12 +1,12 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Firestore, collection, getDocs, doc, getDoc, setDoc } from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EspecialidadesService {
-
-  constructor(private firestore: Firestore) {}
+  private firestore= inject(Firestore)
+  constructor() {}
 
   // 🔹 Cargar todas las especialidades
   async cargarEspecialidades(): Promise<{ id: string, nombre: string }[]> {
@@ -29,6 +29,22 @@ export class EspecialidadesService {
     }
 
     return id;
+  }
+  async getAllEspecialidades() {
+    const especialidadesRef = collection(this.firestore, 'Especialidades');
+
+    try {
+      const snapshot = await getDocs(especialidadesRef);
+
+      return snapshot.docs.map(doc => ({
+        uid: doc.id,
+        nombre: doc.data()['nombre']
+      }));
+      
+    } catch (error) {
+      console.error('Error al obtener especialidades:', error);
+      return [];
+    }
   }
 }
 

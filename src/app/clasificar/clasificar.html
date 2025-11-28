@@ -1,0 +1,29 @@
+
+<h2 mat-dialog-title>Calificar Atención</h2>
+<div class="contenedor">
+    
+  <div class="estrellas">
+    <ng-container *ngFor="let star of [1,2,3,4,5]">
+      <fa-icon
+        class="estrella"
+        [icon]="faStar"
+        [ngClass]="{
+          filled: star <= rating || star <= hoverIndex
+        }"
+        (mouseenter)="setHover(star)"
+        (mouseleave)="clearHover()"
+        (click)="setRating(star)"
+      >
+      </fa-icon>
+    </ng-container>
+  </div>
+  <div class="botones">
+    <button mat-raised-button color="primary" (click)="confirmar()" [disabled]="rating === 0">
+      Confirmar
+    </button>
+
+    <button mat-button color="warn" (click)="cancelar()">
+      Cancelar
+    </button>
+  </div>
+</div>

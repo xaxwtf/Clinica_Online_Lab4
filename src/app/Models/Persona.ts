@@ -11,7 +11,6 @@ export class Persona{
             this._apellido=apellido;
             this._edad=edad;
             this._dni=dni;
-    
             this._mail=mail;
             this._contrasenia=contrasenia;
         }

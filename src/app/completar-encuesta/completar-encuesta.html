@@ -1,0 +1,56 @@
+<div class="modal-container">
+
+  <h2>Como Calificarias Las Siguentes Cuestiones</h2>
+
+  <!-- === Trato Profesional ================== -->
+  <div class="pregunta">
+    <label> El Trato Profesional: </label>
+    <div class="test">
+        @for ( star of  [1,2,3,4,5]; track $index) {
+            
+            <fa-icon class="estrella" [icon]="faStar" [ngClass]="{ filled: star <= (encuesta.tratoProfesional || 0) || star <= hover.tratoProfesional }" 
+            (mouseenter)="setHover('tratoProfesional', star)" 
+            (mouseleave)="clearHover('tratoProfesional')"
+            (click)="setRating('tratoProfesional', star)">
+        </fa-icon>
+        }
+    </div>
+  </div>
+
+  <!-- === Puntualidad ====================== -->
+  <div class="pregunta">
+    <label>Puntualidad En Los Turnos: </label>
+    <div class="test">
+        @for ( star of  [1,2,3,4,5]; track $index) {
+            
+            <fa-icon class="estrella" [icon]="faStar" [ngClass]="{ filled: star <= (encuesta.puntualidad || 0) || star <= hover.puntualidad }" 
+            (mouseenter)="setHover('puntualidad', star)" 
+            (mouseleave)="clearHover('puntualidad')"
+            (click)="setRating('puntualidad', star)">
+        </fa-icon>
+        }
+    </div>
+    
+  </div>
+
+  <!-- === Instalaciones ===================== -->
+  <div class="pregunta">
+    <label>Nuestras Instalaciones: </label>
+    <div class="test">
+        @for ( star of  [1,2,3,4,5]; track $index) {
+            
+            <fa-icon class="estrella" [icon]="faStar" [ngClass]="{ filled: star <= (encuesta.instalaciones || 0) || star <= hover.instalaciones }" 
+            (mouseenter)="setHover('instalaciones', star)" 
+            (mouseleave)="clearHover('instalaciones')"
+            (click)="setRating('instalaciones', star)">
+        </fa-icon>
+        }
+    </div>
+  </div>
+
+  <div class="botones">
+    <button class="btn confirmar" (click)="enviar()">Enviar</button>
+    <button class="btn cancelar" (click)="cancelar()">Cancelar</button>
+  </div>
+
+</div>

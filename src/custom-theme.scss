@@ -1,0 +1,24 @@
+// styles.scss
+
+// Importar Angular Material
+@use '@angular/material' as mat;
+
+// Aplicar tema Material
+html {
+  @include mat.theme((
+    color: (
+      primary: mat.$azure-palette,
+      tertiary: mat.$blue-palette,
+    ),
+    typography: Roboto,
+    density: 0,
+  ));
+}
+
+body {
+  color-scheme: light; // Light mode
+  background-color: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+  font: var(--mat-sys-body-medium);
+  margin: 0; // Reset margin
+}

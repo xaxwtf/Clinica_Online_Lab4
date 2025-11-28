@@ -1,20 +1,23 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { noNumbersValidator, passwordsMatchValidator } from '../Validators/Validators';
+import { captchaValidator, noNumbersValidator, passwordsMatchValidator } from '../Validators/Validators';
 import { Router } from '@angular/router';
 import { SUsuarios } from '../Servicios/s-usuarios';
 import { IPacienteDB } from '../Models/I_PacienteDB';
 import { Rol } from '../Models/Rol';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faArrowsRotate } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-registro-paciente',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, FontAwesomeModule],
   templateUrl: './registro-paciente.html',
   styleUrl: './registro-paciente.css'
 })
 export class RegistroPaciente {
   public registro:FormGroup;
   selectedFiles: File[]=[];
+   faCoffee = faArrowsRotate;
 
   constructor(private fb:FormBuilder, private router: Router, private serv_Usuario: SUsuarios){
     this.registro =this.fb.group({
@@ -28,11 +31,18 @@ export class RegistroPaciente {
       edad:[, Validators.required],
       obraSocial: ['',Validators.required],
       imgPerfil:[],
+      operandoA: [''],
+      operador: [''],
+      operandoB: [''],
+      resultadoChapta: [''],
     
     },
-    { validators: passwordsMatchValidator('contrasenia', 'contraseniaConf') }
+    { validators:[ passwordsMatchValidator('contrasenia', 'contraseniaConf'), captchaValidator ]}
   );
   }
+ngOnInit(){
+  this.setCaptcha();
+}
   
 
 
@@ -68,4 +78,46 @@ onFilesSelected(event: any) {
     console.error("Error al registrar usuario:", error);
   }
 }
+setCaptcha() {
+  const operadores = ['+', '-', '*', '/'];
+  const form = this.registro;
+
+  // Elegir operador aleatorio si querés regenerarlo
+  const operador = operadores[Math.floor(Math.random() * operadores.length)];
+  form.get('operador')?.setValue(operador);
+
+  // Generar operandos aleatorios
+  let a = Math.floor(Math.random() * 10) + 1; // 1 a 10
+  let b = Math.floor(Math.random() * 10) + 1;
+
+  // Elegir aleatoriamente si el usuario completa A o B
+  const completarA = Math.random() < 0.5;
+
+  if(completarA){
+    form.get('operandoA')?.reset();        // limpiar para que el usuario ingrese
+    form.get('operandoA')?.enable();       // habilitar A
+    form.get('operandoB')?.setValue(b);    // fijar B
+    form.get('operandoB')?.disable();      // deshabilitar B
+  } else {
+    form.get('operandoB')?.reset();
+    form.get('operandoB')?.enable();
+    form.get('operandoA')?.setValue(a);
+    form.get('operandoA')?.disable();
+  }
+
+  // Calcular resultado
+  let resultado = 0;
+  switch(operador){
+    case '+': resultado = a + b; break;
+    case '-': resultado = a - b; break;
+    case '*': resultado = a * b; break;
+    case '/': resultado = b !== 0 ? a / b : 0; break;
+  }
+
+  form.get('resultadoChapta')?.setValue(resultado);
+}
+onClickRegenerarCatpcha(){
+  this.setCaptcha();
+}
+
 }

@@ -1,1 +1,117 @@
-<p>perfil-usuario testeando </p>
+<mat-card class="perfil-card">
+
+
+       @if(paciente){
+                <img mat-card-avatar 
+                [src]="paciente.ImagenesDePerfil[0]" 
+                class="avatar">
+                <img mat-card-avatar 
+                [src]="paciente.ImagenesDePerfil[1]" 
+                class="avatar">
+       }
+       @else{
+            <img mat-card-avatar 
+            [src]="usuario?.ImagenesDePerfil " 
+            class="avatar">
+       }
+
+  <mat-card-title>
+    {{ usuario?.Nombre }} {{ usuario?.Apellido }}
+  </mat-card-title>
+
+  <mat-card-subtitle>
+    Rol: {{ usuario?.rol | titlecase }}
+  </mat-card-subtitle>
+
+  <mat-divider></mat-divider>
+
+  <mat-card-content>
+
+    <!-- DATOS COMUNES PARA TODOS -->
+    <h3>Datos personales</h3>
+    <p>DNI: {{ usuario?.DNI }}</p>
+    <p>Edad: {{ usuario?.Edad }}</p>
+
+    <!-- ESPECIALISTA: ESPECIALIDADES -->
+     @if(especialista){
+        <div>
+            <h3>Especialidades</h3>
+            <mat-chip-listbox  selectionRequired >
+                @for( esp of especialista.especialidad ; track $index){
+                    @if($index==0){
+                    <mat-chip-option (selectionChange)="onEspecialidadSeleccionada(esp, $event)" [selected]="esp === especialidadSeleccionada" >{{ esp }}</mat-chip-option>
+                    }
+                    @else{
+                        <mat-chip-option (selectionChange)="onEspecialidadSeleccionada(esp, $event)">{{ esp }}</mat-chip-option>
+                    }
+                }
+            </mat-chip-listbox>
+        </div>
+
+            <!-- ESPECIALISTA: DISPONIBILIDAD -->
+        @if(especialista){
+        <div>
+            <h3>Mis horarios</h3>
+            @if(especialista.disponibilidad){
+            
+                <select name="test" (change)="onDiaChange(especialidadSeleccionada, $event)">
+                    <option value="lunes" selected>Lunes</option>
+                    <option value="martes">Martes</option>
+                    <option value="miercoles">Miércoles</option>
+                    <option value="jueves">Jueves</option>
+                    <option value="viernes">Viernes</option>
+                    <option value="sabado">Sábado</option>
+                    <option value="domingo">Domingo</option>
+                </select>
+                <button (click)="ModificarHorario(especialidadSeleccionada, diaSeleccionado )" >  <fa-icon [icon]="faGear" >  </fa-icon> </button>
+                <br>
+                    @if (diaSeleccionado) {
+                
+                        <br>
+                            @if(especialista.disponibilidad[especialidadSeleccionada][diaSeleccionado]){
+                                @if(especialista.disponibilidad[especialidadSeleccionada][diaSeleccionado].length>0){
+                                    @for (franja of especialista.disponibilidad[especialidadSeleccionada][diaSeleccionado]; track $index) {
+                                        <li>
+                                            Inicio De Atención: {{ franja.desde }}  
+                                            <br>
+                                            Cantidad de Turnos: {{ franja.totalTurnos }}
+                                        </li>
+                                    }
+                                }
+                                @else {
+                                    <li> N/A </li>   
+                                }
+
+                            }
+                            @else {
+                                <li> N/A </li>
+                            }
+                    } 
+            }
+        </div>
+        }
+     } 
+ 
+
+
+
+
+
+
+    <!-- PACIENTE -->
+     @if(paciente){
+           <div >
+            <h3>Obra Social: </h3>
+            <p>{{ paciente.ObraSocial }}</p>
+            </div>
+     }
+ 
+
+    <!-- ADMIN 
+    <div *ngIf="usuario.rol === 'admin'">
+      <h3>Permisos</h3>
+      <p>{{ usuario.permisos?.join(', ') || 'Sin permisos especiales' }}</p>
+    </div>-->
+
+  </mat-card-content>
+</mat-card>

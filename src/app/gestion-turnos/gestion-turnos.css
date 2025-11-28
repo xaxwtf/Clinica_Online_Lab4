@@ -1,0 +1,97 @@
+/* Contenedor general */
+.contenedor {
+  width: 100%;
+  max-width: 1500px;
+  margin: 20px auto;
+}
+
+/* Título */
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-weight: 600;
+  color: #37474f;
+}
+
+/* Tabla Angular Material */
+table {
+  width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* CABECERA */
+.mat-header-row {
+  background: #56baed !important; /* Azul Material */
+  color: white !important;
+  font-weight: bold;
+}
+
+/* Celdas de cabecera */
+.mat-header-cell {
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  padding: 14px 10px !important;
+}
+
+/* Celdas */
+.mat-cell {
+  padding: 12px 10px !important;
+  font-size: 14px;
+  color: #333;
+  vertical-align: middle;
+}
+
+/* Alternar colores de filas */
+.mat-row:nth-child(even) {
+  background: #f7f9fc;
+}
+
+/* Hover suave */
+.mat-row:hover {
+  background: #e3f2fd;
+  cursor: pointer;
+}
+
+/* Íconos en celdas */
+td button mat-icon,
+td fa-icon {
+  font-size: 18px;
+}
+
+/* Botones de la tabla */
+td button {
+  margin: 0 3px;
+}
+
+/* Tooltip */
+.mat-tooltip {
+  font-size: 13px;
+}
+
+/* Botón solicitar turno */
+button.solicitar-btn {
+  margin-top: 20px;
+  background: gray;
+  color: white;
+  border-radius: 6px;
+  padding: 10px 16px;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+button.solicitar-btn:hover {
+  background: #56baed;
+}
+
+/* Estrellas de clasificación */
+fa-icon {
+  color: #56baed; /* amarillo Material */
+  margin-right: 2px;
+}
+fa-icon.estrella{
+   color: #ffca28;
+}
+

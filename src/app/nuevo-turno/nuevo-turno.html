@@ -1,0 +1,20 @@
+<h3>Turnos Disponibles para la Especialidad:  </h3>
+<select name="especialidad" id="" [value]="listaEspecialidades[0].uid">
+    @for (especialidad of listaEspecialidades; track $index) {
+        <option [value]="especialidad.uid"> {{especialidad.nombre}} </option>
+    }
+    <option value=""></option>
+</select>
+<div style="margin-top: 15px;">
+    @for(fecha of fechasDeTurnosACargar; track $index){
+        @if(turnosPorFecha[fecha]){ 
+        <ul>
+            {{fecha}}
+            @for(horario of turnosPorFecha[fecha]; track $index){   
+                <li> {{horario.hora}}  --  {{horario.especialista}}  <button (click)="solicitarTurno(horario)"> <fa-icon [icon]="faAdd" /> </button> </li>
+            }
+        </ul>
+        }
+    }
+  <ul> <button mat-button (click)="cancelar()">Cancelar</button>  </ul>
+</div>

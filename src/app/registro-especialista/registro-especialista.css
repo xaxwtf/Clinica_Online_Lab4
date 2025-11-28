@@ -1,5 +1,6 @@
 /* FORM TYPOGRAPHY*/
 
+
 input[type=button], input[type=submit], input[type=reset]  {
   background-color: #56baed;
   border: none;
@@ -204,4 +205,65 @@ input[type=text]:placeholder {
 }
 h4{
   color: #56baed;
+}
+div.especialidad{
+  background-color: #f6f6f6;
+    border: none;
+    color: #0d0d0d;
+    padding: 15px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 5px;
+    width: 85%;
+    border: 2px solid #f6f6f6;
+    flex-direction: row;
+}
+div.especialidad select{
+  background-color: #f6f6f6;
+  border: none;
+  color: #0d0d0d;
+  padding: 10px 5px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 2px;
+  width: 70%;
+  border: 2px solid #f6f6f6;
+  -webkit-transition: all 0.5s ease-in-out;
+  -moz-transition: all 0.5s ease-in-out;
+  -ms-transition: all 0.5s ease-in-out;
+  -o-transition: all 0.5s ease-in-out;
+  transition: all 0.5s ease-in-out;
+  -webkit-border-radius: 5px 5px 5px 5px;
+  border-radius: 5px 5px 5px 5px;
+
+}
+div.chapta{
+  background-color: #f6f6f6;
+    border: none;
+    color: #0d0d0d;
+    padding: 15px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 5px;
+    width: 85%;
+    border: 2px solid #f6f6f6;
+    flex-direction: row;
+}
+input.ch{
+  width: 25px;
+  padding: 0px;
+}
+div.opciones{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+input#nuevaEspecialidad{
+  padding: 5px;
 }

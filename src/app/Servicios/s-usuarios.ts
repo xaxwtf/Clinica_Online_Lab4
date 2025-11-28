@@ -8,16 +8,14 @@ import {
   where,
   setDoc,
   addDoc,
-  updateDoc
+  updateDoc,
+  getDoc,
+  DocumentReference
 } from '@angular/fire/firestore';
 
 import { 
-  getAuth, 
   createUserWithEmailAndPassword, 
-  signInWithEmailAndPassword, 
-  signOut,
   onAuthStateChanged,
-  UserCredential
 } from 'firebase/auth';
 
 
@@ -25,8 +23,7 @@ import { IUsuarioDB } from '../Models/I_UsuarioDB';
 import { Auth } from '@angular/fire/auth';
 import { getDownloadURL, getStorage, ref, uploadBytes } from '@angular/fire/storage';
 import { EspecialidadesService } from './s-especialidad';
-import { Rol } from '../Models/Rol';
-import { IEspecialistaDB } from '../Models/I_EspecialistaDB';
+
 
 
 
@@ -76,13 +73,20 @@ async register<T extends IUsuarioDB>(
     data.ImagenesDePerfil = data.ImagenesDePerfil.slice(0, 2);
   }
 
-  // 🔹 Si el usuario es especialista, crear/validar su especialidad
-  if ('especialidad' in data && typeof data.especialidad === 'string') {
-    const especialidadId = await this.especialidadesService.obtenerOcrearEspecialidad(data.especialidad);
-    const especialidadRef = doc(this.firestore, `Especialidades/${especialidadId}`);
+  /// Si el usuario es especialista, crear/validar sus especialidades
+  if ('especialidad' in data && Array.isArray(data.especialidad)) {
 
-    (data as any).especialidad = data.especialidad;
-    (data as any).especialidadRef = especialidadRef;
+    const referencias: DocumentReference[] = [];
+
+    for (const esp of data.especialidad) {
+      const espId = await this.especialidadesService.obtenerOcrearEspecialidad(esp);
+      const espRef = doc(this.firestore, `Especialidades/${espId}`);
+      referencias.push(espRef);
+    }
+
+    // Guardar el array de especialidades y sus referencias
+    (data as any).especialidad = [...data.especialidad];
+    (data as any).especialidadRef = referencias;
   }
 
   // 🔹 Limpieza final antes de guardar
@@ -102,19 +106,18 @@ async register<T extends IUsuarioDB>(
 
   // OBTENER USUARIO LOGUEADO
 async getUserLoged(): Promise<IUsuarioDB | null> {
-  const user = this.auth.currentUser;
+  return new Promise(resolve => {
+    onAuthStateChanged(this.auth, async user => {
+      if (!user) return resolve(null);
 
-  if (!user) return null;
+      const ref = doc(this.firestore, 'Usuarios', user.uid);
+      const snap = await getDoc(ref);
 
-  const q = query(
-    collection(this.firestore, 'Usuarios'),
-    where('uid', '==', user.uid)
-  );
+      if (!snap.exists()) return resolve(null);
 
-  const snap = await getDocs(q);
-  if (snap.empty) return null;
-
-  return snap.docs[0].data() as IUsuarioDB;
+      resolve(snap.data() as IUsuarioDB);
+    });
+  });
 }
 
  async getUsuariosByCampo<T>(campo: string, valor: any): Promise<T[]> {

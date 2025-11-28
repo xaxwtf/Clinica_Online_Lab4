@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Validators } from '@angular/forms';
-import { noNumbersValidator, passwordsMatchValidator } from '../Validators/Validators';
+import { captchaValidator, noNumbersValidator, passwordsMatchValidator } from '../Validators/Validators';
 import { AuthService } from '../Servicios/auth.service';
 import { Router } from '@angular/router';
 import { SUsuarios } from '../Servicios/s-usuarios';
@@ -10,15 +10,25 @@ import { Rol } from '../Models/Rol';
 import { collection, getDocs } from '@angular/fire/firestore';
 import { EspecialidadesService } from '../Servicios/s-especialidad';
 
+import  {  FontAwesomeModule  } from '@fortawesome/angular-fontawesome' ;
+import { faCoffee, faArrowsRotate } from '@fortawesome/free-solid-svg-icons';
+import { DisponibilidadPorDia } from '../Models/I_disponibilidadPorDia';
+import { DisponibilidadPorEspecialidad } from '../Models/I_disponibilidadPorEspecialidad';
+
 @Component({
   selector: 'app-registro-especialista',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule,FontAwesomeModule],
   templateUrl: './registro-especialista.html',
   styleUrl: './registro-especialista.css'
 })
 export class RegistroEspecialista {
+
+  faCoffee = faArrowsRotate;
+
   public registro:FormGroup;
   selectedFiles:File[]=[];
+  public operadores:string[]= ["+","-","*","/"];
+  public operadorChapta:string='';
 
   protected especialidadesExistentes:{id:string, nombre:string}[]=[]; ///supongo que estoy constuyendo un array con la estrutura determinada
 
@@ -28,20 +38,29 @@ export class RegistroEspecialista {
       nombre: ['', [Validators.required, noNumbersValidator, Validators.minLength(2) ]],
       apellido: ['', [Validators.required, noNumbersValidator, Validators.minLength(2)]],
       dni: ['',Validators.required],
-      especialidad: ['',Validators.required],
+      especialidad: this.fb.control<string[]>([]),
       correoElectronico:['',[Validators.required]],
       contrasenia: ['',Validators.required],
       contraseniaConf:['',Validators.required],
       edad:[, Validators.required],
       imgPerfil:[],
+      operandoA: [''],
+      operador: [''],
+      operandoB: [''],
+      resultadoChapta: [''],
     },
-    { validators: passwordsMatchValidator('contrasenia', 'contraseniaConf') }
+    { validators: [ 
+      passwordsMatchValidator('contrasenia', 'contraseniaConf'),
+      captchaValidator
+    ]
+    }
   );
   }
 
   async ngOnInit(){
      try {
       this.especialidadesExistentes = await this.serv_Especialidades.cargarEspecialidades();
+      this.setCaptcha();
     } catch (error) {
       console.error('Error al cargar especialidades:', error);
     }
@@ -64,45 +83,162 @@ export class RegistroEspecialista {
   console.log('Archivo seleccionado:', this.selectedFiles);
 }
 
-  seleccionarUnaEspecialidadExistente(event: Event) {
-    const selectElement = event.target as HTMLSelectElement;
-    const valorSeleccionado = selectElement.value;
 
-    //Actualiza el control 'especialidad' en el FormGroup
-    this.registro.patchValue({
-      especialidad: valorSeleccionado
-    });
+onToggleEspecialidad(nombre: string, checked: boolean) {
+  const control = this.registro.get('especialidad');
 
-    console.log('Especialidad seleccionada:', valorSeleccionado);
+  if (!control) return;
+
+  let lista = control.value as string[];
+
+  if (checked) {
+    // Agregar especialidad si no estaba
+    if (!lista.includes(nombre)) {
+      lista = [...lista, nombre];
+    }
+  } else {
+    // Quitar la especialidad si se desmarca
+    lista = lista.filter(e => e !== nombre);
   }
+
+  control.patchValue(lista);
+  console.log("Especialidades seleccionadas:", lista);
+}
+
+async agregarEspecialidadNueva(input: HTMLInputElement) {
+  const nombre = input.value.trim();
+  if (!nombre) return;
+
+  // Verificar si existe
+  const existe = this.especialidadesExistentes
+    .find(e => e.nombre.toLowerCase() === nombre.toLowerCase());
+
+  if (existe) {
+    this.onToggleEspecialidad(existe.nombre, true);
+    input.value = '';  // <--- limpiamos acá
+    return;
+  }
+
+  // Crear nueva
+  const id = await this.serv_Especialidades.obtenerOcrearEspecialidad(nombre);
+  this.especialidadesExistentes.push({ id, nombre });
+  this.onToggleEspecialidad(nombre, true);
+
+  input.value = ''; // <--- limpiar después de crear
+}
     
 
-  async registrarUsuario() {
-    const { correoElectronico, contrasenia, nombre, apellido, edad, dni, especialidad,  imgPerfilUno } = this.registro.value;
+async registrarUsuario() {
+  const { 
+    correoElectronico, 
+    contrasenia, 
+    nombre, 
+    apellido, 
+    edad, 
+    dni, 
+    especialidad,
+    imgPerfilUno 
+  } = this.registro.value;
 
-    const aux = {
-      Nombre:nombre,
-      Apellido:apellido,
-      Edad:edad,
-      DNI:dni,
-      especialidad:especialidad,
-      ImagenesDePerfil:[imgPerfilUno], ///utilizo un array para cargar 1 o N imagenes
-      rol:Rol.Especialista,
-      activo:false  //// inicializo a todos los especialistas inhabilitados!!;
-    } as IEspecialistaDB;
-    console.log("DATOS!");
-    console.log(aux);
+  // Aseguramos que especialidad es un array
+  const especialidadesSeleccionadas = Array.isArray(especialidad) 
+    ? especialidad 
+    : [especialidad].filter(e => e); // evita null/empty
+
+
+    // Días de la semana vacíos
+const diasPorDefecto: DisponibilidadPorDia = {
+  lunes: [],
+  martes: [],
+  miercoles: [],
+  jueves: [],
+  viernes: [],
+  sabado: [],
+  domingo: []
+};
+
+// Crear disponibilidad por cada especialidad seleccionada
+const disponibilidad: DisponibilidadPorEspecialidad = {};
+
+especialidadesSeleccionadas.forEach(esp => {
+  disponibilidad[esp] = { ...diasPorDefecto };
+});
+
+  const aux: IEspecialistaDB = {
+    Nombre: nombre,
+    Apellido: apellido,
+    Edad: edad,
+    DNI: dni,
+    especialidad: especialidadesSeleccionadas,
+    ImagenesDePerfil: [imgPerfilUno],
+    rol: Rol.Especialista,
+    activo: false, /// inicializamos a todos lo usuario inhabilitados
+    disponibilidad
+  };
+
+  console.log("DATOS!");
+  console.log(aux);
 
   try {
-    const r = await this.serv_Usuario.register(correoElectronico, contrasenia, aux, this.selectedFiles!);
-    if (r == null) {
+    const r = await this.serv_Usuario.register(
+      correoElectronico,
+      contrasenia,
+      aux,
+      this.selectedFiles!
+    );
+
+    if (!r) {
       console.log("No se ha registrado el usuario");
     } else {
       console.log("Usuario registrado con éxito");
       this.router.navigate(['/login']);
     }
+
   } catch (error) {
     console.error("Error al registrar usuario:", error);
   }
 }
+
+setCaptcha() {
+  const operadores = ['+', '-', '*', '/'];
+  const form = this.registro;
+
+  // Elegir operador aleatorio si querés regenerarlo
+  const operador = operadores[Math.floor(Math.random() * operadores.length)];
+  form.get('operador')?.setValue(operador);
+
+  // Generar operandos aleatorios
+  let a = Math.floor(Math.random() * 10) + 1; // 1 a 10
+  let b = Math.floor(Math.random() * 10) + 1;
+
+  // Elegir aleatoriamente si el usuario completa A o B
+  const completarA = Math.random() < 0.5;
+
+  if(completarA){
+    form.get('operandoA')?.reset();        // limpiar para que el usuario ingrese
+    form.get('operandoA')?.enable();       // habilitar A
+    form.get('operandoB')?.setValue(b);    // fijar B
+    form.get('operandoB')?.disable();      // deshabilitar B
+  } else {
+    form.get('operandoB')?.reset();
+    form.get('operandoB')?.enable();
+    form.get('operandoA')?.setValue(a);
+    form.get('operandoA')?.disable();
+  }
+
+  // Calcular resultado
+  let resultado = 0;
+  switch(operador){
+    case '+': resultado = a + b; break;
+    case '-': resultado = a - b; break;
+    case '*': resultado = a * b; break;
+    case '/': resultado = b !== 0 ? a / b : 0; break;
+  }
+
+  form.get('resultadoChapta')?.setValue(resultado);
+}
+onClickRegenerarCatpcha(){
+  this.setCaptcha();
+}
+
 }

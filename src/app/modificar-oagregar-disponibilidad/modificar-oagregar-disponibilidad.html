@@ -1,0 +1,17 @@
+<h3>Editar horarios del Dia: {{diaSeleccionado}} </h3>
+<button (click)="agregarHorario()" > Nuevo Horario <fa-icon [icon]="iconoMas"></fa-icon> </button>
+@for (horario of horarios; track $index) {
+
+<div >
+    <label>  {{ $index + 1 }}° Horario de Inicio: <input type="time" [(ngModel)]="horario.desde" />  <button  (click)="quitarHorario($index)" > <fa-icon [icon]="iconoTrash"></fa-icon> </button> </label>
+    <br>
+    <label>  Turnos Disponibles: <input class="nroTurnos" type="number" [(ngModel)]="horario.totalTurnos" />  </label> 
+</div>
+    <br>
+
+}
+<label> </label>
+<div style="margin-top: 15px;">
+  <button mat-button color="primary" (click)="confirmar()">Confirmar</button>
+  <button mat-button (click)="cancelar()">Cancelar</button>
+</div>

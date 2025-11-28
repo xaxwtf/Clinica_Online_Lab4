@@ -1,0 +1,165 @@
+<form  class="contenedor">
+ 
+    <h2> TURNOS </h2>
+  <table mat-table [dataSource]="listaTurnos" class="mat-elevation-z8">
+
+
+  <ng-container matColumnDef="especialista">
+    <th mat-header-cell *matHeaderCellDef class="mat-header-row"> Especialista </th>
+    <td mat-cell *matCellDef="let turno" class="mat-cell"> {{ turno.especialista || 'N/A' }} </td>
+  </ng-container>
+
+  <!-- Paciente -->
+  <ng-container matColumnDef="paciente">
+    <th mat-header-cell *matHeaderCellDef class="mat-header-row"> Paciente <button type="button" mat-icon-button color="primary" matTooltip="Ordenar por " (click)="ordenarDesdeHTML('paciente')" > <fa-icon [icon]="faSort"></fa-icon></button> </th>
+    <td mat-cell *matCellDef="let turno" class="mat-cell"> {{ turno.paciente || 'N/A' }} </td>
+  </ng-container>
+
+  <!-- Especialidad -->
+  <ng-container matColumnDef="especialidad" >
+    <th mat-header-cell *matHeaderCellDef class="mat-header-row"> Especialidad <button type="button" mat-icon-button color="primary" matTooltip="Ordenar por " (click)="ordenarDesdeHTML('especialidad')" > <fa-icon [icon]="faSort"></fa-icon></button>
+    </th>
+    <td mat-cell *matCellDef="let turno" class="mat-cell"> {{ turno.especialidad }} </td>
+  </ng-container>
+
+  <!-- Fecha -->
+  <ng-container matColumnDef="fecha">
+    <th mat-header-cell *matHeaderCellDef class="mat-header-row"> Fecha </th>
+    <td mat-cell *matCellDef="let turno" class="mat-cell"> {{ turno.fecha }} </td>
+  </ng-container>
+
+  <!-- Horario -->
+  <ng-container matColumnDef="horario">
+    <th mat-header-cell *matHeaderCellDef class="mat-header-row"> Horario </th>
+    <td mat-cell *matCellDef="let turno" class="mat-cell"> {{ turno.hora }} </td>
+  </ng-container>
+
+  <!-- Estado -->
+  <ng-container matColumnDef="estado" >
+    <th mat-header-cell *matHeaderCellDef class="mat-header-row"> Estado </th>
+    <td mat-cell *matCellDef="let turno" class="mat-cell"> {{ turno.estado }} </td>
+  </ng-container> 
+
+  <!-- Clasificacion -->
+  <ng-container matColumnDef="clasificacion" >
+    <th mat-header-cell *matHeaderCellDef class="mat-header-row"> Clasificacion </th>
+    <td mat-cell *matCellDef="let turno" class="mat-cell">
+    @if(turno.clasificacion){
+        @for (punto of [].constructor(turno.clasificacion) ; track $index) {
+        <fa-icon [icon]="faStar" class="estrella"></fa-icon>
+        }
+    }
+    </td>
+  </ng-container>
+
+  <!-- Reseña -->
+  <ng-container matColumnDef="resenia">
+    <th mat-header-cell *matHeaderCellDef class="mat-header-row"> Reseña </th>
+    <td mat-cell *matCellDef="let turno" class="mat-cell">
+      @if(turno.resenia){
+        <button type="button" mat-icon-button matTooltip="Ver Reseña"  (click)="verReseniaDePaciente(turno)"><fa-icon [icon]="faFileLines" matTooltip="Ver Reseña"></fa-icon></button>
+      }
+
+    </td>
+  </ng-container>
+
+  <!-- Diagnóstico -->
+  <ng-container matColumnDef="diagnostico" >
+    <th mat-header-cell *matHeaderCellDef class="mat-header-row"> Diagnóstico </th>
+    <td mat-cell *matCellDef="let turno" class="mat-cell">
+              
+          <button type="button" mat-icon-button color="primary" matTooltip="Ver o Editar Diagnóstico " (click)="verOModificarDiagnostico(turno)" >
+              <fa-icon [icon]="faFileSignatura"></fa-icon>
+          </button>
+
+    </td>
+  </ng-container>
+
+  <!-- Acciones -->
+  <ng-container matColumnDef="acciones" >
+    <th mat-header-cell *matHeaderCellDef class="mat-header-row"> Acciones </th>
+    <td mat-cell *matCellDef="let turno" class="mat-cell">
+      @if(soy_especialista){
+        @if(turno.estado == 'solicitado' ){
+
+        <button type="button" mat-icon-button matTooltip="Aceptar Turno" color="primary" (click)="aceptarTurno(turno)">
+          <fa-icon [icon]="faCalendarCheck"></fa-icon>
+        </button>
+        <button type="button" mat-icon-button color="primary" matTooltip="Rechazar Turno" (click)="rechazarTurno(turno)">  
+          <fa-icon [icon]="faCalendarXmark"></fa-icon>
+        </button>
+        }
+        @if(turno.estado == 'confirmado'){
+
+        <button type="button" mat-icon-button  matTooltip="Cancelar Turno" color="primary" (click)="cancelarTurnoConfirmado(turno)" >
+          <fa-icon [icon]="faBan"></fa-icon>
+        </button>
+
+        <button type="button" mat-icon-button matTooltip="Finalizar Turno"  color="primary" (click)="finalizarTurno(turno)">
+          <fa-icon [icon]="faPowerOff"></fa-icon>
+        </button>
+        }
+
+        @if(turno.estado == 'finalizado' && turno.resenia){
+        <button type="button" mat-icon-button color="primary" matTooltip="Ver Reseña del Paciente" (click)="verReseniaDePaciente(turno)" >
+          <fa-icon [icon]="faMessage"></fa-icon>
+        </button>
+        }
+        @if(turno.estado == 'cancelado_especialista' && turno.comentario_especialista ){
+          <button type="button" mat-icon-button color="primary" matTooltip="Ver Comentario de Rechazo del Especialista" (click)="verRazonDelRechazoEspecialista(turno)" >
+              <fa-icon [icon]="faMessage"></fa-icon>
+          </button>
+        }
+
+        @if(turno.estado == 'cancelado_paciente' && turno.comentario_paciente ){
+          <button type="button" mat-icon-button color="primary" matTooltip="Ver Razon de La Cancelacion del Turno" (click)="verComentarioPacienteRechazo(turno)" >
+              <fa-icon [icon]="faMessage"></fa-icon>
+          </button>
+        }
+      }
+      @if(soy_paciente){
+        @if(turno.estado == 'aceptado'){
+        <button type="button" mat-icon-button  matTooltip="Cancelar Turno" color="primary" (click)="cancelarTurnoConfirmadoPaciente(turno)" >
+          <fa-icon [icon]="faBan"></fa-icon>
+        </button>
+        }
+        @if(turno.estado == 'cancelado_paciente' && turno.comentario_paciente ){
+          <button type="button" mat-icon-button color="primary" matTooltip="Ver Razon de La Cancelacion del Turno" (click)="verComentarioPacienteRechazo(turno)" >
+              <fa-icon [icon]="faMessage"></fa-icon>
+          </button>
+        }
+        @if(turno.estado == 'cancelado_especialista' && turno.comentario_especialista ){
+          <button type="button" mat-icon-button color="primary" matTooltip="Ver Comentario de Rechazo del Especialista" (click)="verRazonDelRechazoEspecialista(turno)" >
+              <fa-icon [icon]="faMessage"></fa-icon>
+          </button>
+        }
+        @if(turno.estado == 'finalizado' && !turno.clasificacion){
+          <button type="button" mat-icon-button color="primary" matTooltip="Clasificar Consulta" (click)="clasificarConsulta(turno)">
+              <fa-icon [icon]="faRankingStar"></fa-icon>
+          </button>
+        }
+        @if(turno.estado == 'finalizado' && !turno.resenia){
+          <button type="button" mat-icon-button color="primary" matTooltip="Reseñar" (click)="cargarResenia(turno)" >
+              <fa-icon [icon]="faFileLines"></fa-icon>
+          </button>
+        }
+        @if(turno.estado == 'finalizado' && !turno.encuesta){
+          <button type="button" mat-icon-button color="primary" matTooltip="Realizar Encuesta" (click)="cargaEncuesta(turno)" >
+              <fa-icon [icon]="faClipBoardQuestion"></fa-icon>
+          </button>
+        }
+      
+
+      }
+    </td>
+  </ng-container>
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+  
+
+</table>
+  @if(soy_paciente || soy_admin ){
+    <button type="button" class="solicitar-btn" (click)="solicitarTurno()">Solicitar Nuevo Turno <fa-icon [icon]="faAdd"></fa-icon> </button>
+  }    
+</form>

@@ -1,4 +1,7 @@
-
+:host{
+  height: 100vh;
+  justify-content: center;
+}
 
 /* BASIC */
 
@@ -284,16 +287,24 @@ input[type=text]:placeholder {
 * {
   box-sizing: border-box;
 }
-#test{
-  height: 5vh;
+#test {
   display: flex;
-  justify-content: center;
+  flex-direction: row; 
+  flex-wrap: wrap;
+  justify-content: space-between;         /* espacio entre los botones */
 }
 .test{
   background-color:#5fbae9;
   color: white;
-  width:20vw;
+  width:25%;
+  max-width: 150px;
+  height: 5vh;
+  max-height: 50px;
   margin: 5px 5px 5px 5px;
   padding: 1px;
-  border-radius: 10%;
+  border-radius: 15%;
+}
+.login-container{
+  height: 100%;
+  width: 100%;
 }
