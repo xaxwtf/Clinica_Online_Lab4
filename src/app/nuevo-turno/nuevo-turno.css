@@ -1,30 +1,151 @@
-:host{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.4);
+/* ----- CONTENEDOR GENERAL DEL MODAL ----- */
+:host {
   display: flex;
+  flex-direction: column;
+  gap: 15px;
+  max-height: 80vh;
   align-items: center;
   justify-content: center;
 }
-.modal-contenido {
-  background: white;
-  padding: 20px;
-  border-radius: 8px;
-  min-width: 250px;
+
+/* Título principal */
+h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #56baed;
 }
-.botones {
-  margin-top: 10px;
+
+/* ----- SELECT DE ESPECIALIDAD ----- */
+mat-select {
+  padding: 8px 10px;
+  font-size: 15px;
+  width: 55%;
+  margin: 20px;
+  cursor: pointer;
+}
+.mat-select-value {
   display: flex;
-  justify-content: space-between;
+  justify-content: center; 
 }
-input.nroTurnos{
-    width: 20px;
+.mat-select-placeholder {
+text-align: center;
+}
+
+/* ----- CONTENEDOR DE TABLAS (SCROLL) ----- */
+.contenedor-tablas {
+  max-height: 50vh;
+  overflow-y: auto;
+  padding-right: 8px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* ----- SEPARADOR DE FECHAS ----- */
+.titulo-fecha {
+  font-size: 17px;
+  font-weight: 600;
+  color: #56baed;
+  
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  /* sticky para que la fecha quede visible al scrollear sus turnos */
+  position: sticky;
+  top: 0px; /* justo debajo del select */
+  background: #fafafa;
+  padding: 6px 0;
+  z-index: 5;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+/* ----- TABLAS MATERIAL ----- */
+.tabla-turnos {
+  width: 100%;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+/* Encabezados */
+.mat-header-cell {
+  font-weight: 600;
+  background-color: #f1f1f1;
+  font-size: 14px;
+}
+
+/* Celdas */
+.mat-cell {
+  font-size: 14px;
+  padding: 10px 12px;
+}
+
+/* Hover filas */
+.mat-row:hover {
+  background: #f5f5f5;
+}
+
+/* ----- ESTADO DEL TURNO (badge) ----- */
+.estado {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: white;
+}
+
+/* Colores por estado */
+.estado.pendiente { background: #f9a825; }
+.estado.confirmado { background: #1e88e5; }
+.estado.completado { background: #43a047; }
+.estado.cancelado { background: #e53935; }
+
+/* ----- BOTÓN CANCELAR ----- */
+button[mat-button] {
+  position: sticky;
+  background-color: #56baed;
+  color: white;
+  height: 45px;
+  border-radius: 5px;
+  left: 45%;
+}
+
+.head{
+  margin-top: 25px;
+  position: sticky;
+  top: 10px;
+  background: none;
+  z-index: 10;
+}
+.select-container {
+  position: sticky;
+  top: 0;
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+  background: none; 
+  z-index: 10; 
+  padding: 10px 0; 
+ 
+}
+/* ----- BOTÓN ÍCONO ----- */
+.btn-icono {
+  border-radius: 50%;
+  transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+.btn-icono:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+  transform: scale(1.1);
+}
+
+.btn-icono fa-icon {
+  font-size: 20px;
+  color: gray;
+}
+
+.btn-icono:hover fa-icon {
+  color: #56baed;
 }

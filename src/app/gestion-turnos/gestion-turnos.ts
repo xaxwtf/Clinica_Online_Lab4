@@ -51,7 +51,7 @@ export class GestionTurnos {
   private usuarioLogeado: IEspecialista | IPaciente | IAdmin| null =null;
   private dialog = inject(MatDialog);
   private firestore=inject(Firestore)
-  public rolUsuario:Rol | null= null; 
+  public rolUsuario!:Rol; 
 
   public soy_especialista:boolean=false;
   public soy_paciente:boolean=false;
@@ -101,7 +101,7 @@ export class GestionTurnos {
             'diagnostico',
             'acciones'
         ]
-
+        this.rolUsuario=Rol.Especialista;
         break;
       case Rol.Paciente:
         this.usuarioLogeado= resultadoBusqueda as IPaciente;
@@ -121,11 +121,27 @@ export class GestionTurnos {
             'resenia',
             'acciones'
           ];
+          this.rolUsuario=Rol.Paciente;
         break;
       case Rol.Admin:
         this.usuarioLogeado = resultadoBusqueda as IAdmin;
         ///traigo todos los turnos
+
+        this.listaTurnos= await this.serv_Turnos.getAllTurnos();
         this.soy_admin=resultadoBusqueda.rol === Rol.Admin;
+        this.displayedColumns=[
+            
+            'especialista',
+            'paciente',
+            'especialidad',
+            'fecha',
+            'horario',
+            'estado',
+            'clasificacion',
+            'resenia',
+            'acciones'
+          ];
+        this.rolUsuario=Rol.Admin;
         break;
     }
   }
@@ -137,7 +153,7 @@ export class GestionTurnos {
      if (!this.usuarioLogeado) return; // evita errores si no hay usuario
     // Abrimos el modal enviando las dos franjas
       const dialogRef = this.dialog.open(NuevoTurno, {
-        width: '400px',
+        width: '50%',
         data: { currentUser: this.usuarioLogeado  } // enviamos array de 2 franjas
       });
       const resultado: ITurno | undefined = await dialogRef.afterClosed().toPromise();
@@ -145,12 +161,17 @@ export class GestionTurnos {
       resultado.id_paciente = doc(this.firestore, `Usuarios/${this.usuarioLogeado.uid}`);
       resultado.paciente = this.usuarioLogeado.Apellido + this.usuarioLogeado.Nombre;
       resultado.estado= EstadoTurno.SOLICITADO;
-      this.serv_Turnos.crearTurno(resultado)
+      this.serv_Turnos.crearTurno(resultado).then(r=>{
+            this.recargarTurnos();
+      })
+
+  
   }
 
   aceptarTurno(turnoSelecionado:ITurno){
     console.log("intentando confirmar turno", turnoSelecionado);
     this.serv_Turnos.settearEstadoTurno(turnoSelecionado, EstadoTurno.ACEPTADO);
+    this.recargarTurnos();
   }
   async rechazarTurno(turnoSelecionado:ITurno ){
       const dialogRef=this.dialog.open( MensajeRequired, {
@@ -163,7 +184,7 @@ export class GestionTurnos {
        const complemento= { comentario:respuesta}
       this.serv_Turnos.settearEstadoTurnov2(turnoSelecionado, EstadoTurno.RECHAZADO,complemento);
     }
-    
+    this.recargarTurnos();
   }
 
   async cancelarTurnoConfirmado(turnoSelecionado:ITurno){
@@ -177,6 +198,7 @@ export class GestionTurnos {
        const complemento= { comentario:respuesta}
       this.serv_Turnos.settearEstadoTurnov2(turnoSelecionado, EstadoTurno.CANCELADO_ESPECIALISTA,complemento);
     }
+    this.recargarTurnos();
   }
 
   async cancelarTurnoConfirmadoPaciente(turnoSelecionado:ITurno){
@@ -190,6 +212,7 @@ export class GestionTurnos {
        const complemento= { comentario:respuesta}
       this.serv_Turnos.settearEstadoTurnov2(turnoSelecionado, EstadoTurno.CANCELADO_PACIENTE,complemento);
     }
+    this.recargarTurnos();
   }
 
   async finalizarTurno(turnoSelecionado:ITurno){
@@ -204,21 +227,24 @@ export class GestionTurnos {
       }
       this.serv_Turnos.settearEstadoTurnov2(turnoSelecionado, EstadoTurno.FINALIZADO,complemento);
     }
+    this.recargarTurnos();
   }
-    async verReseniaDePaciente(turnoSelecionado:ITurno){
+  async verReseniaDePaciente(turnoSelecionado:ITurno){
     const dialogRef=this.dialog.open( MensajeRequired, {
         disableClose: true,
          width: '500px',
         data: { modo: Modo.READ , requerimiento: 'Diagnostico del Paciente:', titulo: 'Reseña del Paciciente', info:turnoSelecionado.resenia }
     });
+    this.recargarTurnos();
   }
 
-    async verRazonDelRechazoEspecialista(turnoSelecionado:ITurno){
+  async verRazonDelRechazoEspecialista(turnoSelecionado:ITurno){
       const dialogRef=this.dialog.open( MensajeRequired, {
           disableClose: true,
           width: '500px',
           data: { modo: Modo.READ , requerimiento: 'Diagnostico del Paciente:', titulo: 'Comentantario del Especialista', info:turnoSelecionado.comentario_especialista }
       });
+      this.recargarTurnos();
     }
   async verComentarioPacienteRechazo(turnoSelecionado:ITurno){
     const dialogRef=this.dialog.open( MensajeRequired, {
@@ -226,6 +252,7 @@ export class GestionTurnos {
          width: '500px',
         data: { modo: Modo.READ , requerimiento: 'Diagnostico del Paciente:', titulo: 'Comentantario de Rechazo del Paciente', info:turnoSelecionado.comentario_paciente }
     });
+    this.recargarTurnos();
   }
 
   async verOModificarDiagnostico(turnoSelecionado:ITurno){
@@ -239,8 +266,9 @@ export class GestionTurnos {
         const complemento= { diagnostico:respuesta }
       this.serv_Turnos.settearEstadoTurnov2(turnoSelecionado, EstadoTurno.FINALIZADO,complemento);
     }
+    this.recargarTurnos();
   }
-    ordenarPor(campo: keyof ITurno, asc: boolean = true) {
+  ordenarPor(campo: keyof ITurno, asc: boolean = true) {
       this.listaTurnos = [...this.listaTurnos].sort((a, b) => {
         const valorA: any = a[campo];
         const valorB: any = b[campo];
@@ -277,6 +305,7 @@ export class GestionTurnos {
   }
   ordenarDesdeHTML(campo: string) {
     this.ordenar(campo as keyof ITurno);
+    this.recargarTurnos();
   }
   async clasificarConsulta(turno:ITurno){
     const dialogRef=this.dialog.open( Clasificar, {
@@ -288,6 +317,7 @@ export class GestionTurnos {
       if(respuesta!=undefined){
       this.serv_Turnos.settearClasificacion(turno, respuesta)
     }
+    this.recargarTurnos();
   }
 
   async cargarResenia(turnoSelecionado:ITurno){
@@ -301,6 +331,7 @@ export class GestionTurnos {
        const complemento= { resenia:respuesta}
       this.serv_Turnos.settearResenia(turnoSelecionado,respuesta);
     }
+    this.recargarTurnos();
   }
    async cargaEncuesta(turnoSelecionado:ITurno){
       const dialogRef=this.dialog.open( CompletarEncuesta, {
@@ -312,6 +343,57 @@ export class GestionTurnos {
       
       this.serv_Turnos.settearEncuesta(turnoSelecionado,respuesta);
     }
+    this.recargarTurnos();
+  }
+
+  private async recargarTurnos() {
+    if (!this.usuarioLogeado) return;
+    console.log("RECARGANDO TABLA");
+    switch (this.rolUsuario) {
+      case Rol.Especialista:
+        this.listaTurnos = await this.serv_Turnos.getTurnosPorFiltros([
+          { columna: 'id_especialista', valor: this.usuarioLogeado.uid }
+        ]);
+        
+        break;
+
+      case Rol.Paciente:
+        this.listaTurnos = await this.serv_Turnos.getTurnosPorFiltros([
+          { columna: 'id_paciente', valor: this.usuarioLogeado.uid }
+        ]);
+        
+        break;
+
+      case Rol.Admin:
+        this.listaTurnos = await this.serv_Turnos.getAllTurnos(); 
+        break;
+      default:
+        console.log(this.rolUsuario, "este es el ROL ACTUAL");
+    }
+
+    this.listaTurnos = [...this.listaTurnos]; // fuerza detección de cambios
+  }
+  async rechazarSolicitudAdmin(turnoSelecionado: ITurno){
+
+      const dialogRef=this.dialog.open( MensajeRequired, {
+        disableClose: true,
+        width: '500px',
+        data: { modo:Modo.WRITE, requerimiento: 'Indique la El Motivo del Rechazo de la Solicitud: '}
+      });
+      const respuesta:string | undefined  = await dialogRef.afterClosed().toPromise();
+      if(respuesta!=undefined){
+        const complemento= { comentario:respuesta}
+        this.serv_Turnos.settearEstadoTurnov2(turnoSelecionado, EstadoTurno.RECHAZADO_ADMINISTRACION,complemento);
+      }
+      this.recargarTurnos();
+  }
+   async verComentarioAdministracionRechazo(turnoSelecionado:ITurno){
+    const dialogRef=this.dialog.open( MensajeRequired, {
+        disableClose: true,
+         width: '500px',
+        data: { modo: Modo.READ , requerimiento: 'Diagnostico del Paciente:', titulo: 'Comentantario del Rechazo de su Solicitud', info:turnoSelecionado.comentario_administracion }
+    });
+    this.recargarTurnos();
   }
   
     

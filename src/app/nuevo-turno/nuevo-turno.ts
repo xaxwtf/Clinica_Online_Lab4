@@ -7,13 +7,24 @@ import { TurnosService } from '../Servicios/turnos-service';
 import { ITurno } from '../Models/I_turnos';
 import { RouterLink } from "@angular/router";
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faAdd } from '@fortawesome/free-solid-svg-icons';
+import { faAdd, faHandPointer } from '@fortawesome/free-solid-svg-icons';
 import { EspecialidadesService } from '../Servicios/s-especialidad';
+import { CommonModule } from '@angular/common';
+import { MatTableModule } from '@angular/material/table';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSelectChange, MatSelectModule } from '@angular/material/select';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTooltipModule } from "@angular/material/tooltip";
+import { MatOptionModule } from '@angular/material/core';
+import { MatButtonModule } from '@angular/material/button';
+
+
+
 
 
 @Component({
   selector: 'app-nuevo-turno',
-  imports: [FontAwesomeModule],
+  imports: [FontAwesomeModule, CommonModule, MatTableModule, MatIconModule, MatSelectModule, MatProgressSpinnerModule, MatTooltipModule, MatOptionModule, MatButtonModule],
   templateUrl: './nuevo-turno.html',
   styleUrl: './nuevo-turno.css',
 })
@@ -27,15 +38,20 @@ export class NuevoTurno {
   public listaEspecialidades:{uid:string, nombre:string}[]= [];
 
   public turnosPorFecha: { [fecha: string]: ITurno[] } = {};
+  public turnosFiltrados: { [fecha: string]: ITurno[] } = {};
+   columnas = ['especialista', 'hora', 'estado', 'acciones'];
   
+  public cargandoTurnos = false;
 
   faAdd=faAdd;
+  faHandPointer=faHandPointer;
 
-  public especialidadSeleccionada:string='nefrologia'
-  async ngOnInit(){
-    this.inicializarTurnosPorFechas(15);
+  public especialidadSeleccionada!:string;
+  async ngOnInit() {
     this.listaEspecialidades = await this.serv_Especialidades.getAllEspecialidades();
-    
+    this.especialidadSeleccionada = this.listaEspecialidades[0].uid;
+
+    await this.cargarTurnos();
   }
 
 
@@ -58,19 +74,60 @@ export class NuevoTurno {
     return fechas;
   }
   // Generar fechas y asignar arrays vacíos
-  private inicializarTurnosPorFechas(cantidadDias: number) {
-      const fechas = this.obtenerFechasProximosDias(cantidadDias);
-      this.fechasDeTurnosACargar=fechas;
+private async inicializarTurnosPorFechas(cantidadDias: number) {
+  const fechas = this.obtenerFechasProximosDias(cantidadDias);
+  this.fechasDeTurnosACargar = fechas;
 
-      fechas.forEach(fecha => {
-        this.serv_Turnos.getTurnosDisponibles(fecha, this.especialidadSeleccionada).then(r=>{
-            this.turnosPorFecha[fecha] = r; // inicializamos con lo retornado /// supngo que puede ser vacio o con elementos
-        });
-        
-      });
-    }
+  const nuevoMapa: { [fecha: string]: ITurno[] } = {};
+
+  const promesas = fechas.map(async fecha => {
+    const turnos = await this.serv_Turnos.getTurnosDisponibles(
+      fecha,
+      this.especialidadSeleccionada
+    );
+    nuevoMapa[fecha] = turnos;
+  });
+
+  await Promise.all(promesas);
+
+  this.turnosPorFecha = nuevoMapa;
+}
+
     solicitarTurno( turno:ITurno ){
       console.log(turno, "este es el turno elegido");
       this.dialogRef.close(turno);
     }
+
+    async cambiarEspecialidad(event: MatSelectChange) {
+      this.especialidadSeleccionada = event.value;
+      await this.cargarTurnos(); // usa la misma función centralizada
+    }
+
+    get fechasDisponibles(): string[] {
+      return Object.keys(this.turnosFiltrados);
+    }
+    filtrarFechasConTurnos(): { [fecha: string]: ITurno[] } {
+      const resultado: { [fecha: string]: ITurno[] } = {};
+      for (const fecha in this.turnosPorFecha) {
+        const turnos = this.turnosPorFecha[fecha];
+        if (turnos && turnos.length > 0) {
+          resultado[fecha] = turnos;
+        }
+      }
+        // Esperamos a que TODAS terminen
+
+      return resultado;
+    }
+
+    private async cargarTurnos() {
+      this.cargandoTurnos = true;
+
+      this.turnosPorFecha = {}; // limpiar anterior
+
+      await this.inicializarTurnosPorFechas(15); // ahora es async
+      this.turnosFiltrados = this.filtrarFechasConTurnos();
+
+      this.cargandoTurnos = false;
+    }
+
 }

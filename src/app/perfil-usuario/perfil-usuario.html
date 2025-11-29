@@ -92,21 +92,17 @@
         }
      } 
  
-
-
-
-
-
-
     <!-- PACIENTE -->
      @if(paciente){
-           <div >
+        <div >
             <h3>Obra Social: </h3>
             <p>{{ paciente.ObraSocial }}</p>
-            </div>
+        </div>
+        <br>
+        <button mat-button matTooltip="MisTurnos"  routerLink="/misturnos" > <fa-icon [icon]="faCalendarDays" class="fa-5x"> </fa-icon>  </button>
+        
      }
  
-
     <!-- ADMIN 
     <div *ngIf="usuario.rol === 'admin'">
       <h3>Permisos</h3>

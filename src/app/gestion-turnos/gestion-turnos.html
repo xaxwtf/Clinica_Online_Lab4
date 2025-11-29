@@ -79,7 +79,7 @@
   <ng-container matColumnDef="acciones" >
     <th mat-header-cell *matHeaderCellDef class="mat-header-row"> Acciones </th>
     <td mat-cell *matCellDef="let turno" class="mat-cell">
-      @if(soy_especialista){
+      @if(soy_especialista){   <!-- Acciones del ESPECIALISTA -->
         @if(turno.estado == 'solicitado' ){
 
         <button type="button" mat-icon-button matTooltip="Aceptar Turno" color="primary" (click)="aceptarTurno(turno)">
@@ -117,7 +117,7 @@
           </button>
         }
       }
-      @if(soy_paciente){
+      @if(soy_paciente){  <!-- Acciones Del Paciente -->
         @if(turno.estado == 'aceptado'){
         <button type="button" mat-icon-button  matTooltip="Cancelar Turno" color="primary" (click)="cancelarTurnoConfirmadoPaciente(turno)" >
           <fa-icon [icon]="faBan"></fa-icon>
@@ -148,8 +148,25 @@
               <fa-icon [icon]="faClipBoardQuestion"></fa-icon>
           </button>
         }
-      
+        @if(turno.estado == 'rechazado_administracion'){
+            <button type="button" mat-icon-button  matTooltip="Rechazar Solicitud" color="primary"  (click)="verComentarioAdministracionRechazo(turno)" >
+              <fa-icon [icon]="faMessage"></fa-icon>
+            </button>
+        }     
+        
+      }
+      @if(soy_admin){
 
+            @if(turno.estado == 'solicitado'){
+            <button type="button" mat-icon-button  matTooltip="Rechazar Solicitud" color="primary"  (click)="rechazarSolicitudAdmin(turno)" >
+              <fa-icon [icon]="faBan"></fa-icon>
+            </button>
+            }
+            @if(turno.estado == 'rechazado_administracion'){
+            <button type="button" mat-icon-button  matTooltip="Rechazar Solicitud" color="primary"  (click)="verComentarioAdministracionRechazo(turno)" >
+              <fa-icon [icon]="faMessage"></fa-icon>
+            </button>
+            }             
       }
     </td>
   </ng-container>

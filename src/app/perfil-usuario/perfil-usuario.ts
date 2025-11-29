@@ -24,8 +24,10 @@ import { ModificarOAgregarDisponibilidad } from '../modificar-oagregar-disponibi
 import { MatDialog } from '@angular/material/dialog';
 import { RangoHorario } from '../Models/I_disponibilidadPorHora';
 import { DisponibilidadPorDia } from '../Models/I_disponibilidadPorDia';
-import { faWebAwesome, faGear } from '@fortawesome/free-solid-svg-icons';
+import { faCalendarDays, faGear } from '@fortawesome/free-solid-svg-icons';
 import { FaIconComponent } from "@fortawesome/angular-fontawesome";
+import { RouterLink } from "@angular/router";
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 @Component({
@@ -37,8 +39,9 @@ import { FaIconComponent } from "@fortawesome/angular-fontawesome";
     MatChipsModule,
     MatButtonModule,
     TitleCasePipe,
-    
-    FaIconComponent
+    FaIconComponent,
+    RouterLink,
+    MatTooltipModule
 ],
   templateUrl: './perfil-usuario.html',
   styleUrl: './perfil-usuario.css'
@@ -51,6 +54,7 @@ export class PerfilUsuario {
     public imagenesDePerfil: string[]=["",""];
     private dialog = inject(MatDialog);
     faGear=faGear;
+    faCalendarDays=faCalendarDays;
     
 
     mostrarTodos: boolean = true;

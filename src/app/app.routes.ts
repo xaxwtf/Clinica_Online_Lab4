@@ -6,7 +6,7 @@ export const routes: Routes = [
     {path: "registro", loadComponent: ()=> import('./registro/registro').then(m=>m.Registro)},
     {path: "splash", loadComponent: ()=> import('./splash-scream.component/splash-scream.component').then(m => m.SplashScreamComponent)},
 
-    {path: "test", loadComponent: ()=> import('./gestion-turnos/gestion-turnos').then(m => m.GestionTurnos)},
+    {path: "misturnos", loadComponent: ()=> import('./gestion-turnos/gestion-turnos').then(m => m.GestionTurnos)},
 
     {path: "perfil", loadComponent: ()=> import('./perfil-usuario/perfil-usuario').then(m=>m.PerfilUsuario)},
     {path: "menuAdmin", loadComponent: ()=> import('./menu-administrador/menu-administrador').then(m=>m.MenuAdministrador)},

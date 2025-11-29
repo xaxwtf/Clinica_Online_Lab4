@@ -21,5 +21,5 @@ export interface ITurno {
     diagnostico?:string, //// cargado por el especialista al finalizar un turno
     comentario_especialista?:string
     comentario_paciente?:string
-
+    comentario_administracion?:string
 }

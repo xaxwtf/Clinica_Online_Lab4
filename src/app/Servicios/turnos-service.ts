@@ -48,9 +48,35 @@ export class TurnosService {
   // ---------------------------------------------------------------------
   // ⭐ Obtener todos los turnos
   // ---------------------------------------------------------------------
-  getTurnos() {
-    return collectionData(this.colTurnos, { idField: 'uid' });
-  }
+async getAllTurnos(): Promise<ITurno[]> {
+const snapshot = await getDocs(this.colTurnos);
+
+const turnos: ITurno[] = snapshot.docs.map(d => {
+    const data = d.data();
+    return {
+      uid: d.id,
+      id_especialista: data['id_especialsita'] as DocumentReference<any>,
+      especialista: data['especialista'],
+      id_paciente: data['id_paciente'] as DocumentReference<any>,
+      paciente: data['paciente'],
+      especialidad: data['especialidad'],
+      fecha: data['fecha'],
+      hora: data['hora'],
+      estado: data['estado'] as EstadoTurno,
+      ...(data['resenia'] && { resenia: data['resenia'] }),
+      ...(data['encuesta'] && { encuesta: data['encuesta'] }),
+      ...(data['clasificacion'] && { clasificacion: data['clasificacion'] }),
+      ...(data['diagnostico'] && { diagnostico: data['diagnostico'] }),
+      ...(data['comentario_especialista'] && { comentario_especialista: data['comentario_especialista'] }),
+      ...(data['comentario_paciente'] && { comentario_paciente: data['comentario_paciente'] }),
+    } as ITurno;
+
+
+});
+
+return turnos;
+}
+
 
   // ---------------------------------------------------------------------
   // ⭐ Crear turno
@@ -148,7 +174,7 @@ export class TurnosService {
               const data = d.data() as ITurno;
               turnosDisponibles.push({
                 uid: d.id,
-                id_especialista: data.id_especialista,
+                id_especialista: data['id_especialsita'],
                 especialista: data.especialista,
                 id_paciente: data.id_paciente,
                 paciente: data.paciente,
@@ -243,6 +269,15 @@ export class TurnosService {
               await updateDoc(refTurno, {
               estado: nuevoEstado,
               comentario_especialista: otrosCambios.comentario
+            });
+          break;
+        case EstadoTurno.RECHAZADO_ADMINISTRACION:
+            if (!otrosCambios || !otrosCambios.comentario || otrosCambios.comentario.length < 3) {
+            throw new Error("Para rechazar un turno es necesario dejar un comentario.");
+          }
+              await updateDoc(refTurno, {
+              estado: nuevoEstado,
+              comentario_administracion: otrosCambios.comentario
             });
           break;
 
