@@ -7,16 +7,22 @@ import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { IDiagnostico } from '../Models/I_DIagnostico';
+import { ColorTemperaturaDirective } from '../directivas/color-temperatura';
+import { TemperaturaSufijoDirective } from '../directivas/temperatura-sufijo';
+import { AlturaSufijoDirective } from '../directivas/altura-sufijo';
+import { PesoSufijoDirective } from '../directivas/peso-sufijo';
+import { PresionArterialDirective } from '../directivas/presionArterial';
 
 
 @Component({
   selector: 'app-diagnosticar-paciente',
-  imports: [CommonModule, FormsModule, MatFormFieldModule, MatInputModule],
+  imports: [CommonModule, FormsModule, MatFormFieldModule, MatInputModule, ColorTemperaturaDirective, TemperaturaSufijoDirective, AlturaSufijoDirective, PesoSufijoDirective, PresionArterialDirective],
   templateUrl: './diagnosticar-paciente.html',
   styleUrl: './diagnosticar-paciente.css',
 })
 export class DiagnosticarPaciente {
-
+  
+  
   private diagnostico: IDiagnostico = {
     Altura: "",
     Peso: "",

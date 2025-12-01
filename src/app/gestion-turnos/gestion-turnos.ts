@@ -30,7 +30,7 @@ import { CompletarEncuesta } from '../completar-encuesta/completar-encuesta';
 import { IEncuesta } from '../Models/I_encuesta';
 import { DiagnosticarPaciente } from '../diagnosticar-paciente/diagnosticar-paciente';
 import { IDiagnostico } from '../Models/I_DIagnostico';
-import { FiltrarTurnosPipe } from '../Pipes/FiltrarTurnosPipe';
+import { ResaltarDirective } from '../directivas/resaltarTarget'; 
 import { FormsModule } from '@angular/forms';
 
 
@@ -43,8 +43,8 @@ import { FormsModule } from '@angular/forms';
    MatTableModule,
    MatButtonModule,
    MatTooltipModule,
-   
-   FormsModule
+   ResaltarDirective,
+   FormsModule,
   ],
   templateUrl: './gestion-turnos.html',
   styleUrl: './gestion-turnos.css',
@@ -65,6 +65,7 @@ export class GestionTurnos {
 
   displayedColumns: string[] = [];
   listaTurnos: ITurno[]=[];
+  resaltarTarjet= ResaltarDirective;
 
 
   faEdit = faEdit;

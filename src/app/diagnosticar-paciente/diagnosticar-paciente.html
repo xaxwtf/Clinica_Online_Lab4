@@ -7,22 +7,22 @@
 
     <label>
       Altura:
-      <input type="text" [(ngModel)]="altura" name="altura">
+      <input type="text" [(ngModel)]="altura" appAlturaSufijo  name="altura">
     </label>
 
     <label>
       Peso:
-      <input type="text" [(ngModel)]="peso" name="peso">
+      <input type="text" [(ngModel)]="peso" name="peso" appPesoSufijo>
     </label>
 
     <label>
       Temperatura:
-      <input type="text" [(ngModel)]="temperatura" name="temperatura">
+      <input type="text" [(ngModel)]="temperatura" [appColorTemperatura]="temperatura" appTemperaturaSufijo name="temperatura">
     </label>
 
     <label>
       Presión:
-      <input type="text" [(ngModel)]="presion" name="presion">
+      <input type="text" [(ngModel)]="presion" name="presion" appPresionArterial>
     </label>
   </section>
 

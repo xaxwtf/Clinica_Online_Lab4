@@ -1,29 +1,152 @@
-.perfil-card {
-  max-width: 500px;
-  margin: auto;
-  padding: 20px;
+/* CARD */
+mat-card-content{
   text-align: center;
+}
+
+
+.mat-mdc-card{
   align-items: center;
 }
+.perfil-card {
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
 
+.perfil-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+}
+
+/* IMÁGENES DE PERFIL */
 .avatar {
-  width: 120px;
-  height: 120px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
-  margin: auto;
-  display: block;
+  object-fit: cover;
+  margin-right: 10px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
 }
 
-.activo {
-  color: green;
-  font-weight: bold;
+.avatar:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
-.inactivo {
-  color: red;
-  font-weight: bold;
+/* TÍTULO Y SUBTÍTULO */
+mat-card-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #333;
 }
 
-mat-chip {
-  margin: 5px;
+mat-card-subtitle {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #666;
+  margin-bottom: 12px;
+}
+
+/* DIVIDER */
+mat-divider {
+  margin: 12px 0;
+}
+
+/* ENCABEZADOS DE SECCIONES */
+h3 {
+  font-size: 1.3rem;
+  margin-top: 16px;
+  margin-bottom: 8px;
+  color: #5fbae9;
+  border-bottom: 2px solid #5fbae9;
+  display: inline-block;
+  padding-bottom: 2px;
+}
+
+/* TEXTO DE DATOS */
+p {
+  font-size: 1rem;
+  margin: 4px 0;
+  color: #444;
+}
+
+/* CHIP LIST */
+mat-chip-listbox {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+mat-chip-option {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+mat-chip-option:hover {
+  transform: scale(1.05);
+}
+
+/* SELECTOR DE DÍAS */
+select {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  margin-right: 8px;
+  font-size: 1rem;
+}
+
+/* BOTONES */
+button {
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  background-color: none;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+  margin-right: 8px;
+}
+
+button:hover {
+  background-color: #5fbae9;
+  transform: translateY(-2px);
+}
+
+button fa-icon {
+  vertical-align: middle;
+  margin-left: 4px;
+}
+
+/* LISTAS DE HORARIOS */
+li {
+  margin-bottom: 6px;
+  font-size: 0.95rem;
+  color: #555;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .avatar {
+    width: 60px;
+    height: 60px;
+  }
+
+  mat-card-title {
+    font-size: 1.5rem;
+  }
+
+  h3 {
+    font-size: 1.1rem;
+  }
+
+  button {
+    padding: 6px 12px;
+    font-size: 0.95rem;
+  }
 }

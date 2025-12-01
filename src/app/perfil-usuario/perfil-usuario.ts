@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { IUsuarioDB } from '../Models/I_UsuarioDB';
 import { SUsuarios } from '../Servicios/s-usuarios';
-import { CommonModule } from '@angular/common';
+import { CommonModule, UpperCasePipe } from '@angular/common';
 
 
 import { MatCardModule } from '@angular/material/card';
@@ -30,6 +30,7 @@ import { RouterLink } from "@angular/router";
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TurnosService } from '../Servicios/turnos-service';
 import { TurnosPdfService } from '../Servicios/pdf-turnos-service';
+import { FormatearDNIPipe } from '../Pipes/formatearDNI';
 
 
 @Component({
@@ -43,7 +44,8 @@ import { TurnosPdfService } from '../Servicios/pdf-turnos-service';
     TitleCasePipe,
     FaIconComponent,
     RouterLink,
-    MatTooltipModule
+    MatTooltipModule,
+    FormatearDNIPipe
 ],
   templateUrl: './perfil-usuario.html',
   styleUrl: './perfil-usuario.css'
@@ -59,6 +61,9 @@ export class PerfilUsuario {
     faGear=faGear;
     faCalendarDays=faCalendarDays;
     faFilePdf=faFilePdf;
+
+    formatoDni=FormatearDNIPipe;
+    upperPipe=UpperCasePipe;
 
     mostrarTodos: boolean = true;
     diaSeleccionado: keyof DisponibilidadPorDia = 'lunes';
