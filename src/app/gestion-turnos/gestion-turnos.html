@@ -89,7 +89,7 @@
           <fa-icon [icon]="faCalendarXmark"></fa-icon>
         </button>
         }
-        @if(turno.estado == 'confirmado'){
+        @if(turno.estado == 'aceptado'){
 
         <button type="button" mat-icon-button  matTooltip="Cancelar Turno" color="primary" (click)="cancelarTurnoConfirmado(turno)" >
           <fa-icon [icon]="faBan"></fa-icon>

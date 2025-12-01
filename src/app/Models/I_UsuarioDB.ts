@@ -8,4 +8,5 @@ export interface IUsuarioDB {
   ImagenesDePerfil:string[];
   uid?: string;
   rol:Rol
+  Email?:string;
 }

@@ -23,6 +23,7 @@ import { Rol } from '../Models/Rol';
 import { AuthService } from './auth.service';
 import { puntaje } from '../Models/I_puntuacion';
 import { IEncuesta } from '../Models/I_encuesta';
+import { IDiagnostico } from '../Models/I_DIagnostico';
 
 @Injectable({ providedIn: 'root' })
 export class TurnosService {
@@ -163,9 +164,7 @@ return turnos;
               especialidad,
               fecha,
               hora: horaStr,
-              estado: EstadoTurno.DISPONIBLE,
-              resenia: '',
-              diagnostico: ''
+              estado: EstadoTurno.DISPONIBLE
             });
           } else {
             console.log("turnoOcupado!!!!");
@@ -220,7 +219,7 @@ return turnos;
     });
   }
 
-      public async settearEstadoTurnov2( turno: ITurno, nuevoEstado: EstadoTurno, otrosCambios?: { diagnostico?: string; comentario?:string }): Promise<void> {
+      public async settearEstadoTurnov2( turno: ITurno, nuevoEstado: EstadoTurno, otrosCambios?: { diagnostico?: IDiagnostico; comentario?:string }): Promise<void> {
 
       if (!turno.uid) {
         throw new Error("El turno no tiene UID.");
@@ -231,7 +230,7 @@ return turnos;
       switch (nuevoEstado) {
 
         case EstadoTurno.FINALIZADO:
-          if (!otrosCambios || !otrosCambios.diagnostico || otrosCambios.diagnostico.length < 3) {
+          if (!otrosCambios || !otrosCambios.diagnostico ) {
             throw new Error("Para finalizar un turno debes proporcionar un diagnóstico.");
           }
               // Actualizar solamente el estado

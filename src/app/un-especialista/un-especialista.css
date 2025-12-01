@@ -1,17 +1,79 @@
-:host{
-    display: flex;
-    flex-direction:row;
-    justify-items: center;
+.Informacion {
+  background: #ffffff;
+  padding: 20px 24px;
+  border-radius: 12px;
+  border: 1px solid #e1e5ea;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 20px;
+  max-width: 650px;
+  margin: auto;
+  font-family: "Segoe UI", sans-serif;
 }
-.ActualizarEstados{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 20%;
-    margin: auto;
+
+.Informacion h4 {
+  margin: 0;
+  font-size: 1rem;
+  color: #333;
+  font-weight: 500;
 }
-.Informacion{
+
+.Informacion img {
+  width: 120px;
+  height: 120px;
+  border-radius: 10px;
+  object-fit: cover;
+  border: 1px solid #d0d4d9;
+  justify-self: center;
+}
+
+/* Contenedor de botones */
+.ActualizarEstados {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+/* Botones */
+.ActualizarEstados button {
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.25s ease;
+  min-width: 130px;
+}
+
+.ActualizarEstados button:first-child {
+  background: #2e7d32;  /* verde */
+  color: #fff;
+}
+.ActualizarEstados button:first-child:hover:not([disabled]) {
+  background: #256528;
+}
+
+.ActualizarEstados button:last-child {
+  background: #d32f2f; /* rojo */
+  color: #fff;
+}
+.ActualizarEstados button:last-child:hover:not([disabled]) {
+  background: #b12828;
+}
+
+/* Botones deshabilitados */
+.ActualizarEstados button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Responsivo */
+@media (max-width: 600px) {
+  .Informacion {
+    grid-template-columns: 1fr;
     text-align: center;
-    width: 60%;
-    margin: auto;
+  }
 }

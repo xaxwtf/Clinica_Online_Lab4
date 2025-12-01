@@ -24,10 +24,12 @@ import { ModificarOAgregarDisponibilidad } from '../modificar-oagregar-disponibi
 import { MatDialog } from '@angular/material/dialog';
 import { RangoHorario } from '../Models/I_disponibilidadPorHora';
 import { DisponibilidadPorDia } from '../Models/I_disponibilidadPorDia';
-import { faCalendarDays, faGear } from '@fortawesome/free-solid-svg-icons';
+import { faCalendarDays, faGear, faFilePdf } from '@fortawesome/free-solid-svg-icons';
 import { FaIconComponent } from "@fortawesome/angular-fontawesome";
 import { RouterLink } from "@angular/router";
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { TurnosService } from '../Servicios/turnos-service';
+import { TurnosPdfService } from '../Servicios/pdf-turnos-service';
 
 
 @Component({
@@ -49,13 +51,14 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 export class PerfilUsuario {
     private servUsuarios= inject(SUsuarios)
     private serDisponibilidad= inject(DisponibilidadService)
+    private serv_turnos= inject(TurnosPdfService);
     public usuario: IEspecialista | IPaciente | IAdmin | null= null;
     public especialidadeUsuario:string[]=[];
     public imagenesDePerfil: string[]=["",""];
     private dialog = inject(MatDialog);
     faGear=faGear;
     faCalendarDays=faCalendarDays;
-    
+    faFilePdf=faFilePdf;
 
     mostrarTodos: boolean = true;
     diaSeleccionado: keyof DisponibilidadPorDia = 'lunes';
@@ -156,6 +159,11 @@ onDiaChange(especialidad: string, event: Event) {
     }
     // Seteamos la nueva selección correctamente
     this.especialidadSeleccionada = esp;
+  }
+  generarHistoriaClinicaPDF(){
+    if(this.usuario){
+      this.serv_turnos.generarHistoriaClinicaPDF('./icon/apple-icon-180x180.png',this.usuario.uid!);
+    } 
   }
 
 }

@@ -1,4 +1,54 @@
-:host{
-    text-align: center;
-    align-items: center;
+/* Contenedor general */
+.ContainerEspecialistas {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* Título */
+.ContainerEspecialistas h2 {
+  text-align: center;
+  margin-bottom: 24px;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Lista de tarjetas */
+.ListaEspecialistas {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Contenedor del botón nuevo admin */
+.NuevoAdminContainer {
+  margin-top: 32px;
+  display: flex;
+  justify-content: center;
+}
+
+/* Botón "Nuevo Administrador" */
+.NuevoAdminContainer button {
+  background: #1976d2;
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: 0.2s ease;
+}
+
+.NuevoAdminContainer button:hover {
+  background: #0d5cab;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .ContainerEspecialistas {
+    padding: 12px;
+  }
 }

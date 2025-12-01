@@ -120,14 +120,12 @@ async getUserLoged(): Promise<IUsuarioDB | null> {
   });
 }
 
- async getUsuariosByCampo<T>(campo: string, valor: any): Promise<T[]> {
+ async getUsuariosByCampo<T>(campo: string, valor: any): Promise<T[]> {  //// me devuelve un usuario, y devuelve undefined si
   const q = query(
     collection(this.firestore, 'Usuarios'),
     where(campo, '==', valor)
   );
-
   const snap = await getDocs(q);
-  
   return snap.docs.map(doc => ({
     uid: doc.id,
     ...doc.data()
@@ -141,5 +139,12 @@ async getUserLoged(): Promise<IUsuarioDB | null> {
       activo: estado
     });
   }
+  async obtenerUsuario(uid: string) {
+    const ref = doc(this.firestore, 'Usuarios', uid);
+    const snap = await getDoc(ref);
 
+    if (!snap.exists()) return null;
+
+    return { uid, ...snap.data()};
+  }
 }

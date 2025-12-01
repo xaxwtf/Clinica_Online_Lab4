@@ -2,6 +2,7 @@ import { DocumentData, DocumentReference } from "@angular/fire/firestore";
 import { EstadoTurno } from "./estadosTurno";
 import { IEncuesta } from "./I_encuesta";
 import { puntaje } from "./I_puntuacion";
+import { IDiagnostico } from "./I_DIagnostico";
 
 export interface ITurno {
     uid?: string,
@@ -18,7 +19,7 @@ export interface ITurno {
     encuesta?:IEncuesta,  /// cargada por el usuario //// OPCIONAL
     clasificacion?:puntaje, /// puntaje general de la experiencia del paciente 
     
-    diagnostico?:string, //// cargado por el especialista al finalizar un turno
+    diagnostico?:IDiagnostico, //// cargado por el especialista al finalizar un turno
     comentario_especialista?:string
     comentario_paciente?:string
     comentario_administracion?:string

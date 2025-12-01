@@ -28,6 +28,10 @@ import { Clasificar } from '../clasificar/clasificar';
 import { puntaje } from '../Models/I_puntuacion';
 import { CompletarEncuesta } from '../completar-encuesta/completar-encuesta';
 import { IEncuesta } from '../Models/I_encuesta';
+import { DiagnosticarPaciente } from '../diagnosticar-paciente/diagnosticar-paciente';
+import { IDiagnostico } from '../Models/I_DIagnostico';
+import { FiltrarTurnosPipe } from '../Pipes/FiltrarTurnosPipe';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -38,7 +42,9 @@ import { IEncuesta } from '../Models/I_encuesta';
    FontAwesomeModule,
    MatTableModule,
    MatButtonModule,
-   MatTooltipModule
+   MatTooltipModule,
+   
+   FormsModule
   ],
   templateUrl: './gestion-turnos.html',
   styleUrl: './gestion-turnos.css',
@@ -59,6 +65,7 @@ export class GestionTurnos {
 
   displayedColumns: string[] = [];
   listaTurnos: ITurno[]=[];
+
 
   faEdit = faEdit;
   faTrash = faTrash;
@@ -91,7 +98,6 @@ export class GestionTurnos {
         this.listaTurnos= await this.serv_Turnos.getTurnosPorFiltros([{ columna: 'id_especialista', valor: this.usuarioLogeado.uid }]);
         this.soy_especialista= resultadoBusqueda.rol === Rol.Especialista;
         this.displayedColumns= [
-            'uid_paciente',
             'paciente',
             'especialidad',
             'fecha',
@@ -102,6 +108,7 @@ export class GestionTurnos {
             'acciones'
         ]
         this.rolUsuario=Rol.Especialista;
+        
         break;
       case Rol.Paciente:
         this.usuarioLogeado= resultadoBusqueda as IPaciente;
@@ -216,14 +223,14 @@ export class GestionTurnos {
   }
 
   async finalizarTurno(turnoSelecionado:ITurno){
-    const dialogRef=this.dialog.open( MensajeRequired, {
+    const dialogRef=this.dialog.open( DiagnosticarPaciente, {
         disableClose: true,
-         width: '500px',
-        data: { requerimiento: 'Diagnostico del Paciente: '}
+          width: '1200px',
+          maxHeight: '90vh',
     });
-    const respuesta:string | undefined  = await dialogRef.afterClosed().toPromise();
+    const respuesta:IDiagnostico | undefined  = await dialogRef.afterClosed().toPromise();
     if(respuesta!=undefined){
-      const complemento= { comentario:respuesta
+      const complemento= { diagnostico:respuesta
       }
       this.serv_Turnos.settearEstadoTurnov2(turnoSelecionado, EstadoTurno.FINALIZADO,complemento);
     }
@@ -256,12 +263,12 @@ export class GestionTurnos {
   }
 
   async verOModificarDiagnostico(turnoSelecionado:ITurno){
-      const dialogRef=this.dialog.open( MensajeRequired, {
+      const dialogRef=this.dialog.open( DiagnosticarPaciente, {
           disableClose: true,
           width: '500px',
           data: { modo: Modo.READ_AND_WRITE , requerimiento: 'Diagnostico del Paciente:', titulo: 'Diagnostico: ', info:turnoSelecionado.diagnostico }
       });
-      const respuesta:string | undefined  = await dialogRef.afterClosed().toPromise();
+      const respuesta:IDiagnostico | undefined  = await dialogRef.afterClosed().toPromise();
       if(respuesta!=undefined){
         const complemento= { diagnostico:respuesta }
       this.serv_Turnos.settearEstadoTurnov2(turnoSelecionado, EstadoTurno.FINALIZADO,complemento);

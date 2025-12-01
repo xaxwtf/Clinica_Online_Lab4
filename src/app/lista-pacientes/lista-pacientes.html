@@ -1,0 +1,60 @@
+<form  class="contenedor">
+ 
+    <h2> Mis Pacientes </h2>
+  <table mat-table [dataSource]="listaPacientes" class="mat-elevation-z8">
+
+
+  <ng-container matColumnDef="Nombre">
+    <th mat-header-cell *matHeaderCellDef class="mat-header-row"> Nombre </th>
+    <td mat-cell *matCellDef="let paciente" class="mat-cell"> {{ paciente.Nombre || 'N/A' }} </td>
+  </ng-container>
+
+  <!-- Paciente -->
+  <ng-container matColumnDef="Apellido">
+    <th mat-header-cell *matHeaderCellDef class="mat-header-row"> Apellidos <button type="button" mat-icon-button color="primary" matTooltip="Ordenar por "  > <fa-icon [icon]="faSort"></fa-icon></button> </th>
+    <td mat-cell *matCellDef="let paciente" class="mat-cell"> {{ paciente.Apellido || 'N/A' }} </td>
+  </ng-container>
+
+  <!-- Especialidad -->
+  <ng-container matColumnDef="Email" >
+    <th mat-header-cell *matHeaderCellDef class="mat-header-row"> Correo Electronico<button type="button" mat-icon-button color="primary" matTooltip="Ordenar por "  > <fa-icon [icon]="faSort"></fa-icon></button>
+    </th>
+    <td mat-cell *matCellDef="let paciente" class="mat-cell"> {{ paciente.Email }} </td>
+  </ng-container>
+
+  <!-- Estado -->
+  <ng-container matColumnDef="DNI" >
+    <th mat-header-cell *matHeaderCellDef class="mat-header-row"> DNI </th>
+    <td mat-cell *matCellDef="let paciente" class="mat-cell"> {{ paciente.DNI }} </td>
+  </ng-container> 
+
+  <ng-container matColumnDef="ObraSocial" >
+    <th mat-header-cell *matHeaderCellDef class="mat-header-row"> Obra Social </th>
+    <td mat-cell *matCellDef="let paciente" class="mat-cell"> {{ paciente.ObraSocial }} </td>
+  </ng-container> 
+    <ng-container matColumnDef="ImagenesDePerfil" >
+    <th mat-header-cell *matHeaderCellDef class="mat-header-row"> Img Perfil </th>
+    <td mat-cell *matCellDef="let paciente" class="mat-cell"> </td>
+  </ng-container> 
+
+
+
+  <!-- Acciones -->
+  <ng-container matColumnDef="acciones" >
+    <th mat-header-cell *matHeaderCellDef class="mat-header-row"> Acciones </th>
+    <td mat-cell *matCellDef="let paciente" class="mat-cell">
+
+    <button type="button" mat-icon-button  matTooltip=" Generar Historia Clinica" color="primary" (click)="generarHistoriaClinicaDelPacienteSeleccionado(paciente)">
+              <fa-icon [icon]="faFilePdf"></fa-icon>
+    </button>
+    </td>
+  </ng-container>
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+  
+
+</table>
+ 
+</form>
+

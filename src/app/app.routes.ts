@@ -7,6 +7,7 @@ export const routes: Routes = [
     {path: "splash", loadComponent: ()=> import('./splash-scream.component/splash-scream.component').then(m => m.SplashScreamComponent)},
 
     {path: "misturnos", loadComponent: ()=> import('./gestion-turnos/gestion-turnos').then(m => m.GestionTurnos)},
+    {path: "listaPacientes", loadComponent: ()=> import('./lista-pacientes/lista-pacientes').then(m => m.ListaPacientes)},
 
     {path: "perfil", loadComponent: ()=> import('./perfil-usuario/perfil-usuario').then(m=>m.PerfilUsuario)},
     {path: "menuAdmin", loadComponent: ()=> import('./menu-administrador/menu-administrador').then(m=>m.MenuAdministrador)},

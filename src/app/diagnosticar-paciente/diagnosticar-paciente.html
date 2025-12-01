@@ -1,0 +1,80 @@
+<form>
+  <h2>Diagnóstico del Paciente</h2>
+
+  <!-- Información General -->
+  <section class="infoGeneral">
+    <h4>Información General</h4>
+
+    <label>
+      Altura:
+      <input type="text" [(ngModel)]="altura" name="altura">
+    </label>
+
+    <label>
+      Peso:
+      <input type="text" [(ngModel)]="peso" name="peso">
+    </label>
+
+    <label>
+      Temperatura:
+      <input type="text" [(ngModel)]="temperatura" name="temperatura">
+    </label>
+
+    <label>
+      Presión:
+      <input type="text" [(ngModel)]="presion" name="presion">
+    </label>
+  </section>
+
+  <!-- Información Adicional -->
+  <section class="infoAdicional">
+    <h4>Información Adicional</h4>
+    <section class="camposAdd">
+    <label>
+      <input type="text" [(ngModel)]="extra1" name="extra1" placeholder="Campo">
+      <input type="text" [(ngModel)]="extra2" name="extra2" placeholder="Valor">
+    </label>
+
+    <label>
+      <input type="text" [(ngModel)]="extra3" name="extra3" placeholder="Campo">
+      <input type="text" [(ngModel)]="extra4" name="extra4" placeholder="Valor">
+    </label>
+
+    <label>
+      <input type="text" [(ngModel)]="extra5" name="extra5" placeholder="Campo">
+      <input type="text" [(ngModel)]="extra6" name="extra6" placeholder="Valor">
+    </label>
+
+    </section>
+
+  </section>
+
+  <!-- Anotaciones del especialista -->
+  <section class="anotacionesEspecialista">
+    <h4>Anotaciones del Especialista</h4>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <textarea
+        matInput
+        placeholder="Escriba aquí..."
+        [(ngModel)]="textoIngresado"
+        name="anotaciones"
+        rows="12"
+        cdkAutosize
+        cdkAutosizeMinRows="5"
+        cdkAutosizeMaxRows="20"
+      ></textarea>
+    </mat-form-field>
+
+    @if (errorText) {
+      <p>El texto es demasiado corto</p>
+    }
+  </section>
+
+  <!-- Botones -->
+ <section>
+    <button type="button" (click)="confirmar()">Confirmar</button>
+    <button type="button" (click)="cancelar()">Cancelar</button>
+ </section>
+
+</form>

@@ -1,10 +1,17 @@
+<div class="ContainerEspecialistas"> 
+  <h2>Especialistas</h2>
 
-<div> 
-<h2> Especialistas </h2>
-@for (item of especialistas; track $index) {
-<app-un-especialista [Usuario]="item"  (cambiarEstado)="onCambiarEstado(item,$event)" > </app-un-especialista>
-}
+  <div class="ListaEspecialistas">
+    @for (item of especialistas; track $index) {
+      <app-un-especialista 
+        [Usuario]="item"
+        (cambiarEstado)="onCambiarEstado(item, $event)">
+      </app-un-especialista>
+    }
+  </div>
+
+  <div class="NuevoAdminContainer">
+    <button>Nuevo Administrador</button>
+  </div>
 </div>
-<div>
-    <button> Nuevo Administrador</button>
-</div>
+

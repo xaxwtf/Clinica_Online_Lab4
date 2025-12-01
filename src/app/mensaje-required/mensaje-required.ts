@@ -69,6 +69,5 @@ export class MensajeRequired {
       console.log(this.textoIngresado, "este es el texto!");
       this.errorText=true;
     }
-
   }
 }

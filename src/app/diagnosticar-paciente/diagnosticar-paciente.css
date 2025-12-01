@@ -1,0 +1,151 @@
+
+form {
+  padding: 24px;
+  background: #ffffff;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 700px;
+  margin: auto;
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* Título general */
+form h2 {
+  margin: 0;
+  text-align: center;
+  font-size: 1.8rem;
+  color: #333;
+  font-weight: 600;
+}
+
+/* Secciones */
+section {
+  background: #f7f9fc;
+  padding: 16px 20px;
+  border-radius: 10px;
+  border: 1px solid #e2e6ea;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+section h4 {
+  margin: 0;
+  font-size: 1.15rem;
+  color: #4c5b6c;
+  font-weight: 600;
+  border-left: 4px solid #1976d2;
+  padding-left: 8px;
+}
+
+/* Campos de info general */
+.infoGeneral label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 500;
+  color: #333;
+}
+
+.infoGeneral input {
+  width: 120px;
+  padding: 6px 8px;
+  border: 1px solid #bcc4ce;
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+
+/* Info adicional (grid de 2 columnas) */
+.infoAdicional {
+  display: flex;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.infoAdicional label {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+}
+
+.infoAdicional input {
+  flex: 1;
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid #bcc4ce;
+}
+
+/* Textarea */
+.anotacionesEspecialista .full-width {
+  width: 100%;
+}
+
+.anotacionesEspecialista textarea {
+  border-radius: 8px !important;
+  padding: 12px !important;
+  background: #ffffff;
+}
+
+/* Error */
+p {
+  color: #d32f2f;
+  font-weight: 500;
+  margin: 0;
+  text-align: left;
+}
+
+/* Botones */
+button {
+  padding: 10px 22px;
+  border-radius: 8px;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.2s ease;
+  font-weight: 600;
+}
+
+button:first-of-type {
+  background: #1976d2;
+  color: white;
+}
+
+button:first-of-type:hover {
+  background: #0d5cab;
+}
+
+button:last-of-type {
+  background: #e3e7eb;
+  color: #333;
+}
+
+button:last-of-type:hover {
+  background: #cfd5db;
+}
+
+/* Layout botón confirm/cancel */
+form > button {
+  align-self: flex-end;
+  margin-left: 8px;
+}
+
+@media (max-width: 520px) {
+  .infoAdicional {
+    grid-template-columns: 1fr;
+  }
+
+  .infoGeneral label {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .infoGeneral input {
+    width: 100%;
+  }
+  .camposAdd{
+    display: flex;
+    flex-direction: row;
+  }
+}

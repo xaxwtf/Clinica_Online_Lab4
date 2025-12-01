@@ -1,11 +1,14 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, collection, query, where, getDocs, doc, getDoc, DocumentData } from '@angular/fire/firestore';
+import { Firestore, collection, query, where, getDocs, doc, getDoc } from '@angular/fire/firestore';
 import { Auth } from '@angular/fire/auth';
-import { jsPDF } from 'jspdf';
+import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { ITurno } from '../Models/I_turnos';
-import { IUsuarioDB } from '../Models/I_UsuarioDB';
 import { DocumentReference } from '@angular/fire/compat/firestore';
+import { SUsuarios } from './s-usuarios';
+import { IPaciente } from '../Models/i_Paciente';
+import { faArrowAltCircleUp } from '@fortawesome/free-solid-svg-icons';
+import { IDiagnostico } from '../Models/I_DIagnostico';
 
 @Injectable({
   providedIn: 'root'
@@ -13,26 +16,23 @@ import { DocumentReference } from '@angular/fire/compat/firestore';
 export class TurnosPdfService {
 
   private firestore = inject(Firestore);
-  private auth = inject(Auth);
+  private servicio_usuario = inject(SUsuarios);
+  private DiagnosticoAux:string='';
 
   constructor() {}
 
-  /**
-   * Genera PDF con todos los turnos del paciente logeado
-   * @param logoUrl URL de la imagen/logo a incluir
-   * 
-   */
+  async generarHistoriaClinicaPDF(logoUrl: string,  id_paciente:string ):Promise<boolean> {
 
-  /* async generarPdfTurnosPaciente(logoUrl: string) {
-    const user = this.auth.currentUser;
-    if (!user) throw new Error('Usuario no logeado');
+     const actual = await this.servicio_usuario.obtenerUsuario(id_paciente);
+      if(actual==null){
+        return false;
+      }
+    // Referencia del paciente
+    const pacienteRef = doc(this.firestore, 'Usuarios', id_paciente) as unknown as DocumentReference<any>;
 
-    // Referencia al paciente logeado
-    const pacienteRef=  doc(this.firestore, 'Usuarios', user.uid) as DocumentReference<IUsuarioDB>;
-
-    // Traer turnos donde el paciente sea el logeado
+    // Traer turnos
     const turnosRef = collection(this.firestore, 'Turnos');
-    const q = query(turnosRef, where('id_paciente', '==', pacienteRef));
+    const q = query(turnosRef, where('id_paciente', '==', pacienteRef),  where('estado', '==', 'finalizado') );
     const snap = await getDocs(q);
 
     const turnos: ITurno[] = snap.docs.map(docSnap => {
@@ -41,58 +41,48 @@ export class TurnosPdfService {
       return data;
     });
 
-    // Crear documento PDF
-    const doc = new jsPDF();
+    console.log("Turnos:", turnos);
 
-    // Agregar logo si existe
+    // Usar SOLO UN PDF
+    const docPdf = new jsPDF();
+
+    // Logo
     if (logoUrl) {
       const img = await this.loadImage(logoUrl);
-      doc.addImage(img, 'PNG', 10, 10, 50, 15); // ajusta posición y tamaño
+      docPdf.addImage(img, 'PNG', 10, 10, 50, 15);
     }
 
     // Título
-    doc.setFontSize(18);
-    doc.text('Turnos del Paciente', 70, 25);
+    docPdf.setFontSize(18);
+    docPdf.text('Historia Clínica del Paciente', 70, 25);
 
-    // Fecha de impresión
+    // Fecha
     const fecha = new Date().toLocaleString();
-    doc.setFontSize(10);
-    doc.text(`Fecha de impresión: ${fecha}`, 140, 30);
+    docPdf.setFontSize(10);
+    docPdf.text(`Fecha de impresión: ${fecha}`, 140, 30);
 
-    // Preparar datos de la tabla
-    const bodyData = await Promise.all(turnos.map(async t => {
-      // Obtener nombre del especialista
-      const espSnap = await getDoc(t.id_especialista);
-      const especialistaData = espSnap.exists() ? espSnap.data() : null;
-      const especialistaNombre = especialistaData ? (especialistaData as any).Nombre || 'Sin nombre' : 'Sin nombre';
+    // Preparar datos para autoTable
+    const bodyData = turnos.map(t => [
+      t.especialista,
+      t.especialidad,
+      t.fecha,
+      t.hora,
+      this.diagnosticoToString(t.diagnostico)
+    ]);
 
-      // Convertir horario a Date si viene como Timestamp
-      const fechaTurno = (t.horario as any)?.toDate ? (t.horario as any).toDate() : t.horario;
-
-      return [
-        especialistaNombre,
-        t.especialidad,
-        fechaTurno instanceof Date ? fechaTurno.toLocaleString() : fechaTurno,
-        t.estado,
-        t.reseña || ''
-      ];
-    }));
-
-    // Crear tabla
-    autoTable(doc, {
-      head: [['Especialista', 'Especialidad', 'Horario', 'Estado', 'Reseña']],
+    // Tabla, ahora sí sobre el PDF correcto
+    autoTable(docPdf, {
+      head: [['Especialista', 'Especialidad', 'Fecha', 'Hora', 'Diagnostico']],
       body: bodyData,
       startY: 40,
       styles: { fontSize: 9 }
     });
-
     // Guardar PDF
-    doc.save(`Turnos_${user.displayName || user.email}.pdf`);
+    const aux = actual as IPaciente;
+    docPdf.save(`Turnos_${aux.Email}.pdf`);
+    return true;
   }
 
-  /**
-   * Carga una imagen desde URL y la convierte a base64
-   */
   private loadImage(url: string): Promise<string> {
     return new Promise((resolve, reject) => {
       const img = new Image();
@@ -110,4 +100,20 @@ export class TurnosPdfService {
       img.onerror = reject;
     });
   }
+  private diagnosticoToString(d: IDiagnostico | null | undefined): string {
+   
+  if (!d)
+    return "Altura: N/A\nPeso: N/A\nTemp: N/A\nPresión: N/A";
+    this.DiagnosticoAux = `Altura: ${d.Altura} \n Peso: ${d.Peso}\n Temperatura: ${d.Temperatura}\n Presión: ${d.Presion}`;
+   if(d.otrosDatos){
+    for(let i=0;i<d.otrosDatos.length; i++){
+      const item = d.otrosDatos[i];
+      this.DiagnosticoAux += `${item.clave}: ${item.valor}\n`;
+    }
+   }
+   this.DiagnosticoAux+= `\n ${d.comentarios}`
+
+  return this.DiagnosticoAux;
+}
+
 }
