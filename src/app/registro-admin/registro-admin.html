@@ -52,6 +52,10 @@
           <p  style="color:red; font-size: xx-small;" > El Chapta Es incorrecto!</p>
           }
           </div>
+          <br>
+
+          <div appCaptcha [habilitado]="true" (verificado)="captchaValido = $event"></div>
+          
         <div class="form-buttons">
         <input type="submit" class="fadeIn fourth" value="Registrar" >
         <input type="button" class="fadeIn fourth" value="Cancelar" (click)="cancelar()">

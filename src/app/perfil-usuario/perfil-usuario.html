@@ -94,8 +94,9 @@
             </section>
         </div>
         }
+        
      } 
- 
+     
     <!-- PACIENTE -->
      @if(paciente){
         <div >
@@ -103,10 +104,19 @@
             <p>{{ paciente.ObraSocial }}</p>
         </div>
         <br>
-        <button mat-button matTooltip="MisTurnos"  routerLink="/misturnos" > <fa-icon [icon]="faCalendarDays" class="fa-5x"> </fa-icon>  </button>
-        <button mat-button matTooltip="Generar Mi Historial"  (click)="generarHistoriaClinicaPDF()"> <fa-icon [icon]="faFilePdf" class="fa-5x" > </fa-icon>  </button>
+        
+        
         
      }
+     <section class="botonesFooter">
+            <button mat-button matTooltip="MisTurnos"  routerLink="/misturnos" > <fa-icon [icon]="faCalendarDays" class="fa-5x"> </fa-icon>  </button>
+            @if(paciente){
+                <button mat-button matTooltip="Generar Mi Historial"  (click)="generarHistoriaClinicaPDF()"> <fa-icon [icon]="faFilePdf" class="fa-5x" > </fa-icon>  </button>
+            }
+            
+            <button mat-button matTooltip="Lista de Pacientes"  routerLink="/listaPacientes" > <fa-icon [icon]="faProcedures" class="fa-5x"> </fa-icon>  </button>
+     </section>
+    
 
   </mat-card-content>
 </mat-card>

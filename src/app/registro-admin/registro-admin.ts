@@ -9,11 +9,12 @@ import { faArrowsRotate } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatDialogRef } from '@angular/material/dialog';
 import { isNumber } from 'highcharts';
+import { CaptchaDirective } from '../directivas/CaptchaDirectiva';
 
 
 @Component({
   selector: 'app-registro-admin',
-  imports: [FontAwesomeModule, ReactiveFormsModule],
+  imports: [FontAwesomeModule, ReactiveFormsModule, CaptchaDirective],
   templateUrl: './registro-admin.html',
   styleUrl: './registro-admin.css',
 })
@@ -34,7 +35,7 @@ private dialogRef= inject(MatDialogRef<RegistroAdmin>);
       contraseniaConf:['',Validators.required],
       edad:[, Validators.required, isNumber, isFinite(0) ],
       imgPerfil:[],
-      
+
       operandoA: [''],
       operador: [''],
       operandoB: [''],
@@ -131,6 +132,16 @@ onClickRegenerarCatpcha(){
     this.registrarUsuario();
     this.dialogRef.close();
   }
+  captchaValido: boolean = false;
+
+submit() {
+  if (!this.captchaValido) {
+    console.log("Captcha incorrecto!");
+    return;
+  }
+
+  // continuar con el registro
+}
 
 
 }

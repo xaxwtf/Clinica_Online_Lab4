@@ -48,6 +48,14 @@ export class DiagnosticarPaciente {
   extra5 = '';
   extra6 = '';
 
+  extra1_sp5 = '';
+  rangoExtra1= '';
+  extra2_sp5 = '';
+  rangoExtra2='';
+  extra3_sp5 = '';
+  estadoExtra3_sp5=false;
+  
+
 
   cancelar() {
     this.dialogRef.close();
@@ -71,6 +79,19 @@ export class DiagnosticarPaciente {
   ];
 
   for (const [clave, valor] of extras) {
+    if (clave.trim() !== "" && valor.trim() !== "") {
+      this.diagnostico.otrosDatos?.push({ clave, valor });
+    }
+  }
+
+    // Agregar campos extra si están completos
+  const extras2 = [
+    [this.extra1, this.extra2],
+    [this.extra3, this.extra4],
+    [this.extra5, this.extra6]
+  ];
+
+  for (const [clave, valor] of extras2) {
     if (clave.trim() !== "" && valor.trim() !== "") {
       this.diagnostico.otrosDatos?.push({ clave, valor });
     }

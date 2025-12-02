@@ -44,10 +44,31 @@
       <input type="text" [(ngModel)]="extra5" name="extra5" placeholder="Campo">
       <input type="text" [(ngModel)]="extra6" name="extra6" placeholder="Valor">
     </label>
+    </section>
+  </section>
 
+    <section class="infoAdicional">
+      <h4>Información Adicional Sprint5</h4>
+      <section class="camposAdd">
+      <label>
+        <input type="text" [(ngModel)]="extra1_sp5" name="extra1"   placeholder="Campo">
+        <input type="range" [(ngModel)]="rangoExtra1" name="rango"  min="0" max="100" step="1" placeholder="Valor">
+      </label>
+
+      <label>
+        <input type="text" [(ngModel)]="extra2_sp5" name="extra3" placeholder="Campo">
+        <input type="number" [(ngModel)]="rangoExtra2" name="rango2"  min="0" max="120"  placeholder="Valor">
+      </label>
+
+      <label>
+        <input type="text" [(ngModel)]="extra3_sp5" name="extra5" placeholder="Campo">
+        <input type="checkbox" id="activo" [(ngModel)]="estadoExtra3_sp5">
+        <span>{{ estadoExtra3_sp5 ? 'Sí' : 'No' }}</span>
+      </label>
+      </section>
     </section>
 
-  </section>
+
 
   <!-- Anotaciones del especialista -->
   <section class="anotacionesEspecialista">

@@ -6,7 +6,7 @@ import { CommonModule, UpperCasePipe } from '@angular/common';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatChipSelectionChange, MatChipsModule } from '@angular/material/chips';
+import { MatChipSelectionChange, MatChipsModule} from '@angular/material/chips';
 import { MatButtonModule } from '@angular/material/button';
 
 
@@ -24,7 +24,7 @@ import { ModificarOAgregarDisponibilidad } from '../modificar-oagregar-disponibi
 import { MatDialog } from '@angular/material/dialog';
 import { RangoHorario } from '../Models/I_disponibilidadPorHora';
 import { DisponibilidadPorDia } from '../Models/I_disponibilidadPorDia';
-import { faCalendarDays, faGear, faFilePdf } from '@fortawesome/free-solid-svg-icons';
+import { faCalendarDays, faGear, faFilePdf, faProcedures } from '@fortawesome/free-solid-svg-icons';
 import { FaIconComponent } from "@fortawesome/angular-fontawesome";
 import { RouterLink } from "@angular/router";
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -61,6 +61,7 @@ export class PerfilUsuario {
     faGear=faGear;
     faCalendarDays=faCalendarDays;
     faFilePdf=faFilePdf;
+    faProcedures=faProcedures;
 
     formatoDni=FormatearDNIPipe;
     upperPipe=UpperCasePipe;

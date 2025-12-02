@@ -1,9 +1,19 @@
 /* Contenedor general */
-
 .contenedor {
   width: 100%;
   max-width: 1500px;
   margin: 20px auto;
+  opacity: 0;
+  transform: translateY(-20px);
+  animation: desplegar 0.5s forwards;
+}
+
+/* Animación de despliegue */
+@keyframes desplegar {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Título */
@@ -12,6 +22,9 @@ h2 {
   margin-bottom: 20px;
   font-weight: 600;
   color: #37474f;
+  opacity: 0;
+  transform: translateY(-20px);
+  animation: desplegar 0.5s forwards 0.1s; /* retardo para título */
 }
 
 /* Tabla Angular Material */
@@ -19,6 +32,9 @@ table {
   width: 100%;
   border-radius: 10px;
   overflow: hidden;
+  opacity: 0;
+  transform: translateY(-20px);
+  animation: desplegar 0.5s forwards 0.2s; /* retardo para tabla */
 }
 
 /* CABECERA */
@@ -46,12 +62,24 @@ table {
 /* Alternar colores de filas */
 .mat-row:nth-child(even) {
   background: #f7f9fc;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: desplegarFila 0.5s forwards;
+  animation-delay: calc(var(--row-index) * 0.05s);
 }
 
 /* Hover suave */
 .mat-row:hover {
   background: #e3f2fd;
   cursor: pointer;
+}
+
+/* Animación por fila */
+@keyframes desplegarFila {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Íconos en celdas */
@@ -81,6 +109,9 @@ button.solicitar-btn {
   display: flex;
   align-items: center;
   gap: 6px;
+  opacity: 0;
+  transform: translateY(-20px);
+  animation: desplegar 0.5s forwards 0.3s; /* retardo botón */
 }
 
 button.solicitar-btn:hover {
@@ -89,10 +120,12 @@ button.solicitar-btn:hover {
 
 /* Estrellas de clasificación */
 fa-icon {
-  color: #56baed; /* amarillo Material */
+  color: #56baed; /* azul Material */
   margin-right: 2px;
 }
+
 fa-icon.estrella{
    color: #ffca28;
 }
+
 
