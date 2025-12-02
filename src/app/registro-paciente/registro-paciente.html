@@ -11,17 +11,17 @@
           <p  style="color:red; font-size: xx-small;" > El Apellido No es Válido</p>
         }
         <input type="text" class="fadeIn second" name="login" placeholder="Edad" formControlName="edad" >
-         @if(registro.controls["correoElectronico"].errors && registro.controls["correoElectronico"].touched){
-          <p  style="color:red; font-size: xx-small;" > edad</p>
+         @if(registro.controls["edad"].errors && registro.controls["correoElectronico"].touched){
+          <p  style="color:red; font-size: xx-small;" > La  Edad ingresada no es Valida</p>
         }
         <input type="text" class="fadeIn second" name="login" placeholder="Nro DNI" formControlName="dni" >
-         @if(registro.controls["correoElectronico"].errors && registro.controls["correoElectronico"].touched){
-          <p  style="color:red; font-size: xx-small;" > El Correo Electronico No es Valido</p>
+         @if(registro.controls["dni"].errors && registro.controls["dni"].touched){
+          <p  style="color:red; font-size: xx-small;" > El Dni Ingresado No es Valido</p>
         }
 
         <input type="text" class="fadeIn second" name="login" placeholder="OBRA SOCIAL" formControlName="obraSocial" >
-         @if(registro.controls["correoElectronico"].errors && registro.controls["correoElectronico"].touched){
-          <p  style="color:red; font-size: xx-small;" > El Correo Electronico No es Valido</p>
+         @if(registro.controls["obraSocial"].errors && registro.controls["obraSocial"].touched){
+          <p  style="color:red; font-size: xx-small;" > La Obra social Indicada no es Valida</p>
         }
         <input type="text" class="fadeIn second" name="login" placeholder="Correo Electronico" formControlName="correoElectronico" >
          @if(registro.controls["correoElectronico"].errors && registro.controls["correoElectronico"].touched){
