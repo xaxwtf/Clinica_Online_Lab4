@@ -1,0 +1,1 @@
+import{qb as i}from"./chunk-7EJ4QSIG.js";var n=class t{transform(r){return r?r.toString().replace(/\B(?=(\d{3})+(?!\d))/g,"."):""}static \u0275fac=function(e){return new(e||t)};static \u0275pipe=i({name:"formatearDNI",type:t,pure:!0})};export{n as a};
