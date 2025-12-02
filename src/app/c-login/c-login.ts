@@ -4,6 +4,11 @@ import { Router } from '@angular/router';
 import { AuthService } from '../Servicios/auth.service';
 import { SUsuarios } from '../Servicios/s-usuarios';
 import { Rol } from '../Models/Rol';
+import { ServicesLogs } from '../Servicios/services-logs';
+import { IAdmin } from '../Models/I_Admin';
+import { IEspecialista } from '../Models/I_Especialista';
+import { Pacientes } from '../Models/Pacientes';
+import { IPaciente } from '../Models/i_Paciente';
 
 
 @Component({
@@ -16,6 +21,7 @@ export class CLogin {
 
   login:FormGroup;
   private serv_Usuario=inject(SUsuarios)
+  private serv_logs=inject(ServicesLogs);
   errorLogin:boolean = false;
   constructor( private route: Router, private authService: AuthService, private fb:FormBuilder) {
       this.hideStatusBar();
@@ -32,16 +38,21 @@ async ValidarLogin(){
     try{
       const {correoElectronico, contrasenia} = this.login.value;
       await this.authService.login(correoElectronico, contrasenia).then((r)=>{
+
+        this.serv_logs.settearLog(r.user.uid).then(resp=> localStorage.setItem('idLogActual', resp.id));
         ////validar que tipo de usuario se logeo para cambiar de ruta
         this.serv_Usuario.getUserLoged().then(r=>{
           switch(r?.rol){
             case Rol.Admin:
+               sessionStorage.setItem('usuarioLogueado', JSON.stringify(r as IAdmin));
               this.route.navigate(['menuAdmin']);
               break
             case Rol.Especialista:
+              sessionStorage.setItem('usuarioLogueado', JSON.stringify(r as IEspecialista));
               this.route.navigate(['perfil']);
               break;
             case Rol.Paciente:
+              sessionStorage.setItem('usuarioLogueado', JSON.stringify(r as IPaciente));
               this.route.navigate(['perfil']);
               break;
           }

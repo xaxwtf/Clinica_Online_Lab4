@@ -94,11 +94,12 @@ async register<T extends IUsuarioDB>(
     ...data,
     ImagenesDePerfil: (data.ImagenesDePerfil || []).filter(img => img != null),
     uid: cred.user.uid,
+    uidRef: doc(this.firestore, 'Usuarios', cred.user.uid),
     Email: cred.user.email!,
     creado: new Date(),
   };
 
-  await setDoc(doc(this.firestore, 'Usuarios', cred.user.uid), datosLimpios);
+   await setDoc(doc(this.firestore, 'Usuarios', cred.user.uid), datosLimpios);
 
   return cred;
 }
@@ -147,4 +148,14 @@ async getUserLoged(): Promise<IUsuarioDB | null> {
 
     return { uid, ...snap.data()};
   }
+
+  async getAllUsuarios<T = IUsuarioDB>(): Promise<T[]> {
+  const usuariosRef = collection(this.firestore, 'Usuarios');
+  const snap = await getDocs(usuariosRef);
+
+  return snap.docs.map(docSnap => ({
+    uid: docSnap.id,
+    ...docSnap.data()
+  })) as T[];
+}
 }

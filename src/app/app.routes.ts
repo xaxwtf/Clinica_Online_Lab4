@@ -12,6 +12,7 @@ export const routes: Routes = [
     {path: "perfil", loadComponent: ()=> import('./perfil-usuario/perfil-usuario').then(m=>m.PerfilUsuario)},
     {path: "menuAdmin", loadComponent: ()=> import('./menu-administrador/menu-administrador').then(m=>m.MenuAdministrador)},
     {path: "listaEspecialistas", canActivate: [authGuard],  loadComponent: ()=> import('./lista-especialistas/lista-especialistas').then(m => m.ListaEspecialistas)},
+    {path: "estadisticas", loadComponent: ()=> import('./estadisticas/estadisticas').then(m=>m.Estadisticas)},
 
     {path: "**", redirectTo: "splash"}
 ];

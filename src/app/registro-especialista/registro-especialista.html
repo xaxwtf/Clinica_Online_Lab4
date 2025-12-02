@@ -12,11 +12,11 @@
           <p  style="color:red; font-size: xx-small;" > El Apellido No es Válido</p>
         }
         <input type="text" class="fadeIn second" name="login" placeholder="Edad" formControlName="edad" >
-         @if(registro.controls["correoElectronico"].errors && registro.controls["correoElectronico"].touched){
-          <p  style="color:red; font-size: xx-small;" > edad</p>
+         @if(registro.controls["edad"].errors && registro.controls["correoElectronico"].touched){
+          <p  style="color:red; font-size: xx-small;" > La Edad Indicada no es Valida</p>
         }
         <input type="text" class="fadeIn second" name="login" placeholder="Nro DNI" formControlName="dni" >
-         @if(registro.controls["correoElectronico"].errors && registro.controls["correoElectronico"].touched){
+         @if(registro.controls["dni"].errors && registro.controls["dni"].touched){
           <p  style="color:red; font-size: xx-small;" > El DNI ingresado no es Valido</p>
         }
         <div class="especialidad">
@@ -36,7 +36,7 @@
           <input id="nuevaEspecialidad" #inputEspecialidad type="text" placeholder="Agregar Nueva" (keyup.enter)="agregarEspecialidadNueva(inputEspecialidad) ">
         </div>
 
-         @if(registro.controls["correoElectronico"].errors && registro.controls["correoElectronico"].touched){
+         @if(registro.controls["especialidad"].errors && registro.controls["correoElectronico"].touched){
           <p  style="color:red; font-size: xx-small;" > La Especialidad Indicada no es Valida</p>
         }
         <input type="text" class="fadeIn second" name="login" placeholder="Correo Electronico" formControlName="correoElectronico" >

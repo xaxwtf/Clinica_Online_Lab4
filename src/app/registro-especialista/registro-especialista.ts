@@ -39,7 +39,7 @@ export class RegistroEspecialista {
       apellido: ['', [Validators.required, noNumbersValidator, Validators.minLength(2)]],
       dni: ['',Validators.required],
       especialidad: this.fb.control<string[]>([]),
-      correoElectronico:['',[Validators.required]],
+      correoElectronico:['',[Validators.required, Validators.email]],
       contrasenia: ['',Validators.required],
       contraseniaConf:['',Validators.required],
       edad:[, Validators.required],

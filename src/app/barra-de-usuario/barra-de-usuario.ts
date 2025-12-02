@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import { AuthService } from '../Servicios/auth.service';
 import {MatToolbarModule} from '@angular/material/toolbar';
 
@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { SUsuarios } from '../Servicios/s-usuarios';
 import { IUsuarioDB } from '../Models/I_UsuarioDB';
 import { Router } from '@angular/router';
+import { ServicesLogs } from '../Servicios/services-logs';
 
 @Component({
   selector: 'app-barra-de-usuario',
@@ -17,6 +18,7 @@ import { Router } from '@angular/router';
 })
 export class BarraDeUsuario {
   @Input() usuario: IUsuarioDB | null = null;
+  private serv_logs=inject(ServicesLogs);
 
   constructor(private auth: AuthService, private router:Router) {
     
@@ -25,11 +27,28 @@ export class BarraDeUsuario {
     console.log(this.usuario);
   }
 
-  logout() {
-    this.auth.logout();
+async logout() {
+  try {
+
+
+    const id = localStorage.getItem('idLogActual');
+    if (id) {
+      await this.serv_logs.settearLogOut(id);
+      localStorage.removeItem('idLogActual');
+    }
+
+    // 👇 Esperar logout real
+    await this.auth.logout();
+
+    // 👇 Ahora sí navega
+    this.router.navigate(['/login']);
+
+  } catch (e) {
+    console.error("Error en logout:", e);
+    // fallback por si algo falla
     this.router.navigate(['/login']);
   }
-
+}
   irPerfil() {
     this.router.navigate(['/perfil'])
   }

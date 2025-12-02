@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { UnEspecialista } from '../un-especialista/un-especialista';
 import { SUsuarios } from '../Servicios/s-usuarios';
 
@@ -6,6 +6,9 @@ import { Rol } from '../Models/Rol';
 import { IEspecialistaDB } from '../Models/I_EspecialistaDB';
 import { IUsuarioDB } from '../Models/I_UsuarioDB';
 import { BarraDeUsuario } from '../barra-de-usuario/barra-de-usuario';
+import { MatDialog } from '@angular/material/dialog';
+import { RegistroAdmin } from '../registro-admin/registro-admin';
+import { IAdmin } from '../Models/I_Admin';
 
 @Component({
   selector: 'app-lista-especialistas',
@@ -15,6 +18,7 @@ import { BarraDeUsuario } from '../barra-de-usuario/barra-de-usuario';
 })
 export class ListaEspecialistas implements OnInit {
   public especialistas:IEspecialistaDB[] = []
+  private dialog = inject(MatDialog);
 
   constructor(private serv_Usuarios:SUsuarios){
 
@@ -30,6 +34,11 @@ onCambiarEstado(usuario: IEspecialistaDB, nuevoEstado: boolean) {
       usuario.activo = nuevoEstado; // actualizar vista
     });
 }
-
+async generarNuevoAdmin(){
+        const dialogRef=this.dialog.open( RegistroAdmin, {
+        disableClose: true,
+        width: '700px',
+      });
+}
 
 }

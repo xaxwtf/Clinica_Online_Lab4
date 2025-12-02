@@ -1,1 +1,76 @@
-<p>estadisticas works!</p>
+<section>
+    <div #graficoRef id="grafico" style="width:100%; height:400px"  >
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <!-- optional -->
+    <script src="https://code.highcharts.com/modules/offline-exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+</div>
+
+</section>
+<section>
+    <div #testRef id="test" style="width:100%; height:400px">
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <!-- optional -->
+    <script src="https://code.highcharts.com/modules/offline-exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+</div>
+
+</section>
+
+<section>
+    <div #grafico_dia_ref  id="grafico_dia_ref" style="width:100%; height:400px">
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <!-- optional -->
+    <script src="https://code.highcharts.com/modules/offline-exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+</div>
+
+</section>
+
+
+<section>
+<div class="card">
+  <h2>Cantidad de turnos solicitados por médico</h2>
+
+  <label>Fecha desde</label>
+  <input type="date" [(ngModel)]="fechaDesde">
+
+  <label>Fecha hasta</label>
+  <input type="date" [(ngModel)]="fechaHasta">
+
+  <button (click)="generarGraficoTurnosPorMedico()">Generar gráfico</button>
+</div>
+
+<div #graficoTurnosMedico style="width: 100%; height: 400px; margin-top: 20px;">
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <!-- optional -->
+    <script src="https://code.highcharts.com/modules/offline-exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+
+</div>
+
+</section>
+
+<section>
+    <h2>Cantidad de turnos Finalizados por médico</h2>
+    <div class="rango-fechas">
+    <label>Desde:</label>
+    <input type="date" [(ngModel)]="fechaDesde" />
+    
+    <label>Hasta:</label>
+    <input type="date" [(ngModel)]="fechaHasta" />
+
+    <button (click)="generarGraficoTurnosFinalizados()">Generar gráfico</button>
+    </div>
+
+    <div #graficoTurnosFinalizados style="width: 100%; height: 400px;">
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <!-- optional -->
+    <script src="https://code.highcharts.com/modules/offline-exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+
+    </div>
+
+</section>
+
+

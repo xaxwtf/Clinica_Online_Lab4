@@ -1,0 +1,62 @@
+      <!-- Login Form -->
+<div class="wrapper fadeInDown">
+    <div id="formContent"> 
+
+  
+      <form [formGroup]="registro" (ngSubmit)="confirmar()" >
+        <h2 class="form-title"> Registro Administrador</h2>
+        <div class="form-scrollable">
+        <input type="text"  class="fadeIn second" name="login" placeholder="Nombre" formControlName="nombre"  >
+         @if(registro.controls["nombre"].errors && registro.controls["nombre"].touched){
+          <p  style="color:red; font-size: xx-small;" > El Nombre No es Válido</p>
+        }
+
+        <input type="text" class="fadeIn second" name="login" placeholder="Apellido"  formControlName="apellido">
+         @if(registro.controls["apellido"].errors && registro.controls["apellido"].touched){
+          <p  style="color:red; font-size: xx-small;" > El Apellido No es Válido</p>
+        }
+        <input type="number" class="fadeIn second" name="login" placeholder="Edad" formControlName="edad" >
+         @if(registro.controls["correoElectronico"].errors && registro.controls["correoElectronico"].touched){
+          <p  style="color:red; font-size: xx-small;" > edad</p>
+        }
+        <input type="text" class="fadeIn second" name="login" placeholder="Nro DNI" formControlName="dni" >
+         @if(registro.controls["dni"].errors && registro.controls["dni"].touched){
+          <p  style="color:red; font-size: xx-small;" > El DNI ingresado no es Valido </p>
+        }
+
+        <input type="text" class="fadeIn second" name="login" placeholder="Correo Electronico" formControlName="correoElectronico">
+         @if(registro.controls["correoElectronico"].errors && registro.controls["correoElectronico"].touched){
+          <p  style="color:red; font-size: xx-small;" > El Correo Electronico No es Valido</p>
+        }
+
+        <input type="password" id="password" class="fadeIn third" name="login" placeholder="Contraseña" formControlName="contrasenia">
+        @if(registro.hasError('passwordsMismatch') && registro.get('contraseniaConf')?.touched){
+          <p  style="color:red; font-size: xx-small;" > Las Contraseñas no Coinciden</p>
+        }
+        <input type="password" id="passwordotra" class="fadeIn third" name="login" placeholder="Confirmar Contraseña" formControlName="contraseniaConf" >
+        
+        <h4>Imagene De Perfil</h4>
+        <input type="file" class="fadeIn second" name="login" placeholder="Imagen de Perfil" formControlName="imgPerfil" (change)="onFilesSelected($event)"  accept="image/*" >
+         @if(registro.controls["correoElectronico"].errors && registro.controls["correoElectronico"].touched){
+          <p  style="color:red; font-size: xx-small;" > Debe Seleccionar al Menos una Imagen</p>
+        }
+          <div class="chapta">
+          <input type="text" class="ch" value="5"  formControlName="operandoA" > <input type="text" class="ch"   formControlName="operador" readonly> <input type="text" class="ch"  formControlName="operandoB"> =  <input type="text" class="ch"  formControlName="resultadoChapta">
+          <button type="button" (click)="onClickRegenerarCatpcha()" class="icon-btn">
+              <fa-icon [icon]="faCoffee"></fa-icon>
+          </button>
+        </div>
+           @if(registro.hasError('captchaIncorrecto') && 
+          (registro.get('operandoA')?.touched || registro.get('operandoB')?.touched)){
+  
+          <p  style="color:red; font-size: xx-small;" > El Chapta Es incorrecto!</p>
+          }
+          </div>
+        <div class="form-buttons">
+        <input type="submit" class="fadeIn fourth" value="Registrar" >
+        <input type="button" class="fadeIn fourth" value="Cancelar" (click)="cancelar()">
+        </div>
+      </form>
+    </div>
+</div>
+      

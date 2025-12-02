@@ -1,4 +1,4 @@
-import { DocumentData, DocumentReference } from "@angular/fire/firestore";
+import { DocumentData, DocumentReference, Timestamp } from "@angular/fire/firestore";
 import { EstadoTurno } from "./estadosTurno";
 import { IEncuesta } from "./I_encuesta";
 import { puntaje } from "./I_puntuacion";
@@ -14,6 +14,7 @@ export interface ITurno {
     fecha:string,
     hora:string,
     estado:EstadoTurno,
+    fecha_emision:Date | Timestamp;
 
     resenia?:string, ////cargado por el paciente /// comentario del paciente
     encuesta?:IEncuesta,  /// cargada por el usuario //// OPCIONAL

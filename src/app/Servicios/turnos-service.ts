@@ -56,13 +56,14 @@ const turnos: ITurno[] = snapshot.docs.map(d => {
     const data = d.data();
     return {
       uid: d.id,
-      id_especialista: data['id_especialsita'] as DocumentReference<any>,
+      id_especialista: data['id_especialista'] as DocumentReference<any>,
       especialista: data['especialista'],
       id_paciente: data['id_paciente'] as DocumentReference<any>,
       paciente: data['paciente'],
       especialidad: data['especialidad'],
       fecha: data['fecha'],
       hora: data['hora'],
+      fecha_emision: data['fecha_emision'],
       estado: data['estado'] as EstadoTurno,
       ...(data['resenia'] && { resenia: data['resenia'] }),
       ...(data['encuesta'] && { encuesta: data['encuesta'] }),
@@ -164,7 +165,8 @@ return turnos;
               especialidad,
               fecha,
               hora: horaStr,
-              estado: EstadoTurno.DISPONIBLE
+              estado: EstadoTurno.DISPONIBLE,
+              fecha_emision: new Date()
             });
           } else {
             console.log("turnoOcupado!!!!");
